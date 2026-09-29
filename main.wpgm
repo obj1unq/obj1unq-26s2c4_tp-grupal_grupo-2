@@ -1,0 +1,15 @@
+import wollok.game.*
+import guerrero.*
+
+program juego {
+
+    game.addVisual(guerrero)
+
+    const animacion = game.tick(100, {
+        miraAbajo.siguienteFrame()
+    }, false)
+
+    animacion.start()
+
+    game.start()
+}
