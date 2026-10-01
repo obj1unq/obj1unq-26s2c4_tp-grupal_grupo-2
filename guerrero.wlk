@@ -26,8 +26,3 @@ object guerrero {
   }
 }
 
-
-var abajo1     = new MiraADireccion(maxFramesMov = 12, direccion = "abajo_", maxFramesAtaq = 8)
-var arriba1    = new MiraADireccion(maxFramesMov = 4, direccion = "arriba_", maxFramesAtaq = 8)
-var derecha1   = new MiraADireccion(maxFramesMov = 12, direccion = "derecha_", maxFramesAtaq = 8)
-var izquierda1 = new MiraADireccion(maxFramesMov = 12, direccion = "izquierda_", maxFramesAtaq = 8)

@@ -6,7 +6,7 @@ program juego {
 
     game.addVisual(guerrero)
 
-    const animacionMovimiento = game.tick(90, {guerrero.posicionDeMira().siguienteFrame(guerrero.posicionDeMira().maxFramesMov())}, false)
+    const animacionMovimiento = game.tick(100, {guerrero.posicionDeMira().siguienteFrame(guerrero.posicionDeMira().maxFramesMov())}, false)
 
     keyboard.left().onPressDo({ guerrero.mover(moverIzquierda) })
     keyboard.right().onPressDo({ guerrero.mover(moverDerecha) })
