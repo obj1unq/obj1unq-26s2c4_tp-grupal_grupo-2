@@ -1,15 +1,21 @@
 import wollok.game.*
 import guerrero.*
+import direcciones.*
 
 program juego {
 
     game.addVisual(guerrero)
 
-    const animacion = game.tick(100, {
-        miraAbajo.siguienteFrame()
-    }, false)
+    const animacionMovimiento = game.tick(90, {guerrero.posicionDeMira().siguienteFrame(guerrero.posicionDeMira().maxFramesMov())}, false)
 
-    animacion.start()
+    keyboard.left().onPressDo({ guerrero.mover(moverIzquierda) })
+    keyboard.right().onPressDo({ guerrero.mover(moverDerecha) })
+    keyboard.up().onPressDo({ guerrero.mover(moverArriba) })
+    keyboard.down().onPressDo({ guerrero.mover(moverAbajo) })
+
+    keyboard.space().onPressDo({ guerrero.posicionDeMira().atacar() })
+    
+    animacionMovimiento.start()
 
     game.start()
 }
