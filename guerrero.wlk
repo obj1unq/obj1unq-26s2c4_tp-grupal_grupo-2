@@ -1,9 +1,9 @@
-
+import direcciones.*
 
 object guerrero {
-  var energy = 100
-  var position = game.origin()
-  var posicionDeMira = miraAbajo
+  var property energy = 100
+  var property position = game.origin()
+  var property posicionDeMira = abajo1
 
   method energy(){
     return energy
@@ -16,22 +16,18 @@ object guerrero {
   method image() {
     return posicionDeMira.image()
   }
+
+  method mover(direccion) {
+    position = direccion.siguiente(position, self)
+  }
+
+  method atacar(){
+    return posicionDeMira.atacar()
+  }
 }
 
-object miraAbajo {
 
-    var estadoActual = 1
-
-    method image() {
-        return "abajo_" + estadoActual  + ".png"
-    }
-
-    method siguienteFrame() {
-        if (estadoActual < 12) {
-            estadoActual = estadoActual + 1
-        }
-        else {
-          estadoActual = 1
-        }
-    }
-}
+var abajo1     = new MiraADireccion(maxFramesMov = 12, direccion = "abajo_", maxFramesAtaq = 8)
+var arriba1    = new MiraADireccion(maxFramesMov = 4, direccion = "arriba_", maxFramesAtaq = 8)
+var derecha1   = new MiraADireccion(maxFramesMov = 12, direccion = "derecha_", maxFramesAtaq = 8)
+var izquierda1 = new MiraADireccion(maxFramesMov = 12, direccion = "izquierda_", maxFramesAtaq = 8)
