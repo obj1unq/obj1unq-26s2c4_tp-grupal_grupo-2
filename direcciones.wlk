@@ -45,7 +45,10 @@ class MiraADireccion {
 }
 
 
-
+var abajo1     = new MiraADireccion(maxFramesMov = 6, direccion = "abajo_", maxFramesAtaq = 8)
+var arriba1    = new MiraADireccion(maxFramesMov = 6, direccion = "arriba_", maxFramesAtaq = 8)
+var derecha1   = new MiraADireccion(maxFramesMov = 6, direccion = "derecha_", maxFramesAtaq = 8)
+var izquierda1 = new MiraADireccion(maxFramesMov = 6, direccion = "izquierda_", maxFramesAtaq = 8)
 
 
 object moverArriba {
