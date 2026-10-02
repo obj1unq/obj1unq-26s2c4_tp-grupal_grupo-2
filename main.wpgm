@@ -1,12 +1,14 @@
 import wollok.game.*
-import guerrero.*
+import personajes.*
 import direcciones.*
 
 program juego {
 
     game.addVisual(guerrero)
+    game.addVisual(goblin)
 
-    const animacionMovimiento = game.tick(100, {guerrero.posicionDeMira().siguienteFrame(guerrero.posicionDeMira().maxFramesMov())}, false)
+    const animacionMovimientoGoblin   = game.tick(100, {goblin.posicionDeMira().siguienteFrame(goblin.posicionDeMira().maxFramesMov())}, false)
+    const animacionMovimientoGuerrero = game.tick(100, {guerrero.posicionDeMira().siguienteFrame(guerrero.posicionDeMira().maxFramesMov())}, false)
 
     keyboard.left().onPressDo({ guerrero.mover(moverIzquierda) })
     keyboard.right().onPressDo({ guerrero.mover(moverDerecha) })
@@ -15,7 +17,8 @@ program juego {
 
     keyboard.space().onPressDo({ guerrero.posicionDeMira().atacar() })
     
-    animacionMovimiento.start()
+    animacionMovimientoGuerrero.start()
+    animacionMovimientoGoblin.start()
 
     game.start()
 }
