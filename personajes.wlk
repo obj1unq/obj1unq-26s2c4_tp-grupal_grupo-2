@@ -1,63 +1,118 @@
 import direcciones.*
+import estados.*
 
 class Personaje {
 
-  var property position 
-  var property posicionDeMira
+  var property position
   var property personaje
   var property nivel
-  var arriba    = new MiraADireccion(maxFramesMov = 6, direccion = "arriba_", maxFramesAtaq = 8)
-  var abajo     = new MiraADireccion(maxFramesMov = 6, direccion = "abajo_", maxFramesAtaq = 8)
-  var derecha   = new MiraADireccion(maxFramesMov = 6, direccion = "derecha_", maxFramesAtaq = 8)
-  var izquierda = new MiraADireccion(maxFramesMov = 6, direccion = "izquierda_", maxFramesAtaq = 8)
+  var property estado = normal
+  
 
-  method arriba() {
-  return arriba
-}
+  var posicionArriba    = new Frame(posicion = arriba)
 
-method abajo() {
-  return abajo
-}
+  var posicionAbajo     = new Frame(posicion = abajo)
 
-method izquierda() {
-  return izquierda
-}
+  var posicionDerecha   = new Frame(posicion = derecha)
 
-method derecha() {
-  return derecha
-}
+  var posicionIzquierda = new Frame(posicion = izquierda)
 
-  method position(){
+  method posicionArriba() {
+    return posicionArriba
+  }
+
+  method posicionAbajo() {
+    return posicionAbajo
+  }
+
+  method posicionIzquierda() {
+    return posicionIzquierda
+  }
+
+  method posicionDerecha() {
+    return posicionDerecha
+  }
+
+  method position() {
     return position
   }
 
-  method image(){
-    return posicionDeMira.image(personaje, nivel)
-  }
+  method image()
 
-  method mover(direccion) 
+  method mover(direccion)
 
   method atacar()
+
+  method esAtravesable() {
+    return false
+  }
+  
 }
 
 class Guerrero inherits Personaje {
-  
+  const enemigo = goblin
+  var property posicionDeMira = posicionArriba
+
   override method mover(direccion) {
-    if(not posicionDeMira.ataque())
-      position = direccion.siguiente(position, self)
+    if(estado.puedeMover()) {
+        const nuevaPosicion = direccion.siguiente(position, self)
+        const objetos = game.getObjectsIn(nuevaPosicion)
+        self.validarNuevaPosicion(nuevaPosicion, objetos)
+    }
   }
 
-  override method atacar(){
-    return posicionDeMira.atacar()
+  method validarNuevaPosicion(nuevaPosicion, objetos) {
+    if(self.sonAtravesables(objetos)) {
+        position = nuevaPosicion
+    }
   }
+
+  method sonAtravesables(objetos){
+    return objetos.all({ objeto => objeto.esAtravesable() })
+  }
+
+  override method atacar() {
+      if(estado.puedeAtacar()) {
+        estado = ataque
+        posicionDeMira.iniciarFrames()
+        self.validarEnemigo()
+     }
+  }
+
+  method validarEnemigo(){
+    const casilleroAtaque = posicionDeMira.casilleroSiguiente(position)
+    if(enemigo.position() == casilleroAtaque) {
+          enemigo.recibirDanio()
+    }
+  }
+
+  
+
+  override method image() {
+    return posicionDeMira.image(personaje, nivel, estado)
+  }
+
 }
+
+
 
 class Goblin inherits Personaje {
 
+  var property posicionDeMira = posicionAbajo
+
   override method mover(direccion) {}
   override method atacar() {}
+
+  override method image() {
+    return posicionDeMira.image(personaje, nivel, estado)
+  }
+
+  method recibirDanio(){
+    estado = danio
+    posicionDeMira.iniciarFrames()
+  }
+
 }
 
-var posicionInicio = new MiraADireccion(maxFramesMov = 6, direccion = "derecha_", maxFramesAtaq = 8)
-var guerrero = new Guerrero(position = game.origin(), posicionDeMira = posicionInicio, personaje = "guerrero", nivel = 1)
-var goblin   = new Goblin(position = game.at(3,3), posicionDeMira = posicionInicio, personaje = "goblin", nivel = 1)
+var goblin   = new Goblin(position = game.at(3,3), personaje = "goblin", nivel = 1)
+var guerrero = new Guerrero(position = game.origin(),  personaje = "guerrero", nivel = 1)
