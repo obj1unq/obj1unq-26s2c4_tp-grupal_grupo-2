@@ -1,80 +1,102 @@
 import game.*
-import guerrero.*
+import personajes.*
+import estados.*
 
-class MiraADireccion {
+class Frame {
 
-  var property maxFramesMov
-  var direccion
-  var maxFramesAtaq
-  var ataque = false
-  var estadoActual = 1
+    var property frameActual = 1
+    var property posicion
 
-  method image() {
-    if(ataque){
-        return direccion + "1_" + estadoActual + ".png"
+    method image(personaje, nivel, estado) {
+        return posicion.nombre() + "_" + personaje + nivel + estado.nombre() + "_" + frameActual + ".png"
     }
-    return direccion + estadoActual + ".png"
-  }
-  
 
-  method siguienteFrame(frames) {
-    if (not ataque) {
-        if (estadoActual < frames) {
-            estadoActual = estadoActual + 1
-        } else {
-            estadoActual = 1
-        }
-    } else {
-        self.siguienteFrameAtaque()
-        }
-  }
-  method siguienteFrameAtaque(){
-    if (estadoActual < maxFramesAtaq) {
-            estadoActual = estadoActual + 1
-        } else {
-            estadoActual = 1
-            ataque = false
+    method siguienteFrame(personaje) {
+        personaje.estado().siguienteFrame(self, personaje)
     }
-  }
 
-  method atacar(){
-    ataque       = true
-    estadoActual = 1
-  }
+    method noHaySiguienteFrame(cantidadFrames) {
+        if(frameActual < cantidadFrames) {
+            frameActual = frameActual + 1
+            return false
+        }
 
+        frameActual = 1
+        return true
+    }
+
+    method iniciarFrames() {
+        frameActual = 1
+    }
+
+    method casilleroSiguiente(position) {
+        return posicion.casilleroSiguiente(position)
+    }
 }
 
+object arriba {
 
-var abajo1     = new MiraADireccion(maxFramesMov = 6, direccion = "abajo_", maxFramesAtaq = 8)
-var arriba1    = new MiraADireccion(maxFramesMov = 6, direccion = "arriba_", maxFramesAtaq = 8)
-var derecha1   = new MiraADireccion(maxFramesMov = 6, direccion = "derecha_", maxFramesAtaq = 8)
-var izquierda1 = new MiraADireccion(maxFramesMov = 6, direccion = "izquierda_", maxFramesAtaq = 8)
+    method nombre() {
+        return "arriba"
+    }
 
-
-object moverArriba {
     method siguiente(position, personaje) {
-        personaje.posicionDeMira(arriba1)
+        personaje.posicionDeMira(personaje.posicionArriba())
+        return position.up(1)
+    }
+
+    method casilleroSiguiente(position) {
         return position.up(1)
     }
 }
 
-object moverAbajo {
+
+object abajo {
+
+    method nombre() {
+        return "abajo"
+    }
+
     method siguiente(position, personaje) {
-        personaje.posicionDeMira(abajo1)
+        personaje.posicionDeMira(personaje.posicionAbajo())
+        return position.down(1)
+    }
+
+    method casilleroSiguiente(position) {
         return position.down(1)
     }
 }
 
-object moverDerecha {
+
+object derecha {
+
+    method nombre() {
+        return "derecha"
+    }
+
     method siguiente(position, personaje) {
-        personaje.posicionDeMira(derecha1)
+        personaje.posicionDeMira(personaje.posicionDerecha())
+        return position.right(1)
+    }
+
+    method casilleroSiguiente(position) {
         return position.right(1)
     }
 }
 
-object moverIzquierda {
+
+object izquierda {
+
+    method nombre() {
+        return "izquierda"
+    }
+
     method siguiente(position, personaje) {
-        personaje.posicionDeMira(izquierda1)
+        personaje.posicionDeMira(personaje.posicionIzquierda())
+        return position.left(1)
+    }
+
+    method casilleroSiguiente(position) {
         return position.left(1)
     }
 }
