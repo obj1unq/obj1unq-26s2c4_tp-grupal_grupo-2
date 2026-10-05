@@ -1,11 +1,17 @@
 import wollok.game.*
 import personajes.*
 import direcciones.*
+import mapa.*
+import cosasEntorno.*
+
+
 
 program juego {
-
-    game.addVisual(guerrero)
-    game.addVisual(goblin)
+    
+    nivel.configurarTablero()
+    nivel.dibujarMapa()
+    //game.addVisual(guerrero)
+    //game.addVisual(goblin)
 
     const animacionMovimientoGoblin = game.tick(100, {goblin.posicionDeMira().siguienteFrame(goblin)}, false)
 
