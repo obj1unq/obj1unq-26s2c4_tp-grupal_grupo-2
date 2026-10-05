@@ -92,6 +92,11 @@ class Guerrero inherits Personaje {
     return posicionDeMira.image(personaje, nivel, estado)
   }
 
+  method redibujar() {
+    game.removeVisual(self)
+    game.addVisual(self)
+  }
+
 }
 
 
