@@ -86,8 +86,6 @@ class Guerrero inherits Personaje {
     }
   }
 
-  
-
   override method image() {
     return posicionDeMira.image(personaje, nivel, estado)
   }
@@ -105,7 +103,24 @@ class Goblin inherits Personaje {
 
   var property posicionDeMira = posicionAbajo
 
-  override method mover(direccion) {}
+  override method mover(direccion) {
+    if(estado.puedeMover()) {
+        const nuevaPosicion = direccion.siguiente(position, self)
+        const objetos = game.getObjectsIn(nuevaPosicion)
+        self.validarNuevaPosicion(nuevaPosicion, objetos)
+    } 
+  }
+
+  method validarNuevaPosicion(nuevaPosicion, objetos) {
+    if(self.sonAtravesables(objetos)) {
+        position = nuevaPosicion
+    }
+  }
+
+  method sonAtravesables(objetos){
+    return objetos.all({ objeto => objeto.esAtravesable() })
+  }
+
   override method atacar() {}
 
   override method image() {
