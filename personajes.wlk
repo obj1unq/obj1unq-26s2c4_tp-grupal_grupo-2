@@ -132,5 +132,5 @@ class Goblin inherits Personaje {
 
 
 
-var goblin   = new Goblin(position = game.at(3,3), personaje = "goblin", nivel = 1)
+var goblin = new Goblin(position = game.at(3,3), personaje = "goblin", nivel = 1)
 var guerrero = new Guerrero(position = game.origin(),  personaje = "guerrero", nivel = 1)
