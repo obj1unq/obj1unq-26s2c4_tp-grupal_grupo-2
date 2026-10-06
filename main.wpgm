@@ -1,3 +1,4 @@
+import randomizer.*
 import wollok.game.*
 import personajes.*
 import direcciones.*
@@ -14,8 +15,8 @@ program juego {
     //game.addVisual(goblin)
 
     const animacionMovimientoGoblin = game.tick(100, {goblin.posicionDeMira().siguienteFrame(goblin)}, false)
-
     const animacionMovimientoGuerrero = game.tick(100, { guerrero.posicionDeMira().siguienteFrame(guerrero)}, false)
+    const movimientoGoblin = game.tick(1000, { goblin.mover(movimientoAutomatico.direccionRandom()) }, false)
 
     keyboard.left().onPressDo({ guerrero.mover(izquierda) })
     keyboard.right().onPressDo({ guerrero.mover(derecha) })
@@ -26,6 +27,8 @@ program juego {
     
     animacionMovimientoGuerrero.start()
     animacionMovimientoGoblin.start()
+    movimientoGoblin.start()
+    
 
     game.start()
 }

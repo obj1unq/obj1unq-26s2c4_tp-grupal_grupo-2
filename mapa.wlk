@@ -1,6 +1,5 @@
 import personajes.*
 import cosasEntorno.*
-import guerrero.*
 import direcciones.*
 
 object nivel{
@@ -10,8 +9,8 @@ object nivel{
                    [a,_,_,_,_,_,_,p,_,a],
                    [a,_,_,_,p,_,_,_,_,a],
                    [a,_,_,_,_,_,_,p,_,a],
-                   [a,p,_,_,_,_,_,_,d,_],
-                   [a,_,_,g,_,_,p,_,_,_],
+                   [a,p,_,_,_,_,_,_,d,a],
+                   [a,_,_,g,_,_,p,_,_,a],
                    [a,_,_,_,_,_,_,_,_,a],
                    [a,_,_,_,_,_,_,p,_,a],
                    [a,_,p,_,_,_,_,_,_,a],
