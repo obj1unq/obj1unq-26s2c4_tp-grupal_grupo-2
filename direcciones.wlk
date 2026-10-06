@@ -48,6 +48,14 @@ object arriba {
     method casilleroSiguiente(position) {
         return position.up(1)
     }
+    method validarNuevaPosicion(personaje, nuevaPosicion, objetos) {
+        if(self.sonAtravesables(objetos)) {
+            personaje.position(nuevaPosicion)
+        }
+    }
+    method sonAtravesables(objetos){
+        return objetos.all({ objeto => objeto.esAtravesable() })
+  }
 }
 
 
@@ -65,6 +73,15 @@ object abajo {
     method casilleroSiguiente(position) {
         return position.down(1)
     }
+
+    method validarNuevaPosicion(personaje, nuevaPosicion, objetos) {
+        if(self.sonAtravesables(objetos)) {
+            personaje.position(nuevaPosicion)
+        }
+    }
+    method sonAtravesables(objetos){
+        return objetos.all({ objeto => objeto.esAtravesable() })
+  }
 }
 
 
@@ -81,6 +98,17 @@ object derecha {
 
     method casilleroSiguiente(position) {
         return position.right(1)
+    }
+
+    method validarNuevaPosicion(personaje, nuevaPosicion, objetos) {
+        if(self.sonAtravesables(objetos)) {
+            personaje.position(nuevaPosicion)
+        }
+    }
+
+    method sonAtravesables(objetos){
+        return objetos.all({ objeto => objeto.esAtravesable() })
+    
     }
 }
 
@@ -99,4 +127,13 @@ object izquierda {
     method casilleroSiguiente(position) {
         return position.left(1)
     }
+
+    method validarNuevaPosicion(personaje, nuevaPosicion, objetos) {
+        if(self.sonAtravesables(objetos)) {
+            personaje.position(nuevaPosicion)
+        }
+    }
+    method sonAtravesables(objetos){
+        return objetos.all({ objeto => objeto.esAtravesable() })
+  }
 }
