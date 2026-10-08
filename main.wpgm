@@ -13,7 +13,6 @@ program juego {
     nivel.dibujarMapa()
     //game.addVisual(guerrero)
     //game.addVisual(goblin)
-
     const animacionMovimientoGoblin = game.tick(100, {goblin.posicionDeMira().siguienteFrame(goblin)}, false)
     const animacionMovimientoGuerrero = game.tick(100, { guerrero.posicionDeMira().siguienteFrame(guerrero)}, false)
     const movimientoGoblin = game.tick(1000, { goblin.mover(movimientoAutomatico.direccionRandom()) }, false)

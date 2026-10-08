@@ -2,37 +2,6 @@ import game.*
 import personajes.*
 import estados.*
 
-class Frame {
-
-    var property frameActual = 1
-    var property posicion
-
-    method image(personaje, nivel, estado) {
-        return posicion.nombre() + "_" + personaje + nivel + estado.nombre() + "_" + frameActual + ".png"
-    }
-
-    method siguienteFrame(personaje) {
-        personaje.estado().siguienteFrame(self, personaje)
-    }
-
-    method noHaySiguienteFrame(cantidadFrames) {
-        if(frameActual < cantidadFrames) {
-            frameActual = frameActual + 1
-            return false
-        }
-
-        frameActual = 1
-        return true
-    }
-
-    method iniciarFrames() {
-        frameActual = 1
-    }
-
-    method casilleroSiguiente(position) {
-        return posicion.casilleroSiguiente(position)
-    }
-}
 
 object arriba {
 

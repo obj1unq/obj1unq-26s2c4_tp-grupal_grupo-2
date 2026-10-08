@@ -1,11 +1,14 @@
 import direcciones.*
 import estados.*
+import nivelPersonajes.*
+
 
 class Personaje {
 
   var property position
   var property personaje
   var property nivel
+  var property esAtravesable = false
   var property estado = normal
 
   var posicionArriba    = new Frame(posicion = arriba)
@@ -38,10 +41,6 @@ class Personaje {
   method mover(direccion) 
 
   method atacar()
-
-  method esAtravesable() {
-    return false
-  }
   
 }
 
@@ -49,11 +48,20 @@ class Personaje {
 class Guerrero inherits Personaje {
   const enemigo = goblin
   var property posicionDeMira = posicionArriba
+  var vida = 9
 
+  method vida(){
+    return vida
+  }
+
+  method vida(danio){
+    vida -= danio
+  }
+  
   override method atacar() {
       if(estado.puedeAtacar()) {
         estado = ataque
-        posicionDeMira.iniciarFrames()
+        posicionDeMira.reiniciar()
         self.validarEnemigo()
      }
   }
@@ -63,6 +71,7 @@ class Guerrero inherits Personaje {
     const casilleroAtaque = posicionDeMira.casilleroSiguiente(position)
     if(enemigo.position() == casilleroAtaque) {
           enemigo.recibirDanio()
+          nivel.perderEnergia(enemigo)
     }
   }
 
@@ -79,10 +88,27 @@ class Guerrero inherits Personaje {
     }
   }
 
-  method recibirDanio(){
-    estado = danio
-    posicionDeMira.iniciarFrames()
+  
+  method recibirDanio() {
+      if (vida > 0) {
+          estado = danio
+          posicionDeMira.reiniciar()
+      }
   }
+
+
+  method perderEnergia(danio){
+    self.vida(danio)
+    self.validarMuerte()
+  }
+
+  method validarMuerte(){
+    if(vida == 0){
+      estado = muerteGuerrero
+      posicionDeMira.reiniciar()
+    }
+  }
+
 
   method redibujar() {
     game.removeVisual(self)
@@ -96,11 +122,21 @@ class Guerrero inherits Personaje {
 class Goblin inherits Personaje {
   const enemigo = guerrero
   var property posicionDeMira = posicionAbajo
+  var vida = 6
+
+  method vida(){
+    return vida
+  }
+
+  method vida(danio){
+    vida -= danio
+  }
 
   override method atacar() {
       if(estado.puedeAtacar()) {
         estado = ataque
-        posicionDeMira.iniciarFrames()
+        posicionDeMira.reiniciar()
+
     }
   }
   override method mover(direccion) {
@@ -117,6 +153,7 @@ class Goblin inherits Personaje {
     if(enemigo.position() == casilleroAtaque) {
       self.atacar()
       enemigo.recibirDanio()
+      nivel.perderEnergia(enemigo)
     }
   }
 
@@ -126,11 +163,24 @@ class Goblin inherits Personaje {
 
   method recibirDanio(){
     estado = danio
-    posicionDeMira.iniciarFrames()
+    posicionDeMira.reiniciar()
+  }
+
+  method perderEnergia(danio){
+    self.vida(danio)
+    self.validarMuerte()
+  }
+
+  method validarMuerte(){
+    if(vida == 0){
+      estado = muerteGoblin
+      posicionDeMira.reiniciar()
+    }
   }
 }
 
 
 
-var goblin = new Goblin(position = game.at(3,3), personaje = "goblin", nivel = 1)
-var guerrero = new Guerrero(position = game.origin(),  personaje = "guerrero", nivel = 1)
+var goblin = new Goblin(position = game.at(3,3), personaje = "goblin", nivel = nivelGoblin1)
+
+var guerrero = new Guerrero(position = game.origin(), personaje = "guerrero", nivel = nivelGuerrero1)
