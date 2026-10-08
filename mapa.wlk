@@ -6,15 +6,16 @@ object nivel{
     const jugador = guerrero
     const mapa = [//0,1,2,3,4,5,6,7,8,9 
                    [a,a,a,a,a,a,a,a,a,a],
-                   [a,_,_,_,_,_,_,p,_,a],
-                   [a,_,_,_,p,_,_,_,_,a],
-                   [a,_,_,_,_,_,_,p,_,a],
-                   [a,p,_,_,_,_,_,_,d,a],
+                   [a,_,p2,_,_,_,_,_,_,a],
+                   [a,_,_,_,p3,_,_,_,_,a],
+                   [a,_,_,_,_,_,_,p2,_,a],
+                   [a,p2,_,_,_,_,_,_,d,a],
                    [a,_,_,_,_,_,a,_,_,a],
                    [a,_,_,_,_,_,_,_,_,a],
-                   [a,_,_,_,_,_,_,a,_,a],
-                   [a,g,p,_,_,_,_,_,_,a],
-                   [a,a,a,a,a,a,a,a,a,a]
+                   [a,_,_,_,_,_,_,p1,_,a],
+                   [a,g,p1,_,_,_,_,_,_,a],
+                   [a,a,a,a,a,a,a,a,a,a],
+                   [l,c,c,c,c,c,c,c,c,c]
                 ].reverse()
 
     //    const fila = [p,m,_,_,_,_,m]
@@ -54,7 +55,7 @@ object nivel{
 
 object a{
     method poner(position){
-        game.addVisual(new Arbol(position = position))
+        game.addVisual(new Imagen(image = "pino.png", position = position))
     }
 }
 
@@ -75,9 +76,22 @@ object g{
     }
 }
 
-object p{
+
+object p1{
     method poner(position){
-        game.addVisual(new Piedra(position = position))
+        game.addVisual(new Imagen(image = "roca1_1.png", position = position))
+    }
+}
+
+object p2{
+    method poner(position){
+        game.addVisual(new Imagen(image = "roca1_2.png", position = position))
+    }
+}
+
+object p3{
+    method poner(position){
+        game.addVisual(new Imagen(image = "roca1_3.png", position = position))
     }
 }
 
@@ -85,5 +99,17 @@ object d{
     method poner(position){
         goblin.position(position)
         game.addVisual(goblin)
+    }
+}
+
+object l {
+    method poner(position){
+        game.addVisual(new Imagen(image = "personaje.png", position = position))
+    }
+}
+
+object c {
+    method poner(position){
+        game.addVisual(new Imagen(image = "corazon_lleno_transparente.png", position = position))
     }
 }
