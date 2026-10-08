@@ -1,0 +1,33 @@
+import randomizer.*
+import wollok.game.*
+import personajes.*
+import direcciones.*
+import mapa.*
+import cosasEntorno.*
+
+
+
+program juego {
+    
+    nivel.configurarTablero()
+    nivel.dibujarMapa()
+    //game.addVisual(guerrero)
+    //game.addVisual(goblin)
+    const animacionMovimientoGoblin = game.tick(100, {goblin.posicionDeMira().siguienteFrame(goblin)}, false)
+    const animacionMovimientoGuerrero = game.tick(100, { guerrero.posicionDeMira().siguienteFrame(guerrero)}, false)
+    const movimientoGoblin = game.tick(1000, { goblin.mover(movimientoAutomatico.direccionRandom()) }, false)
+
+    keyboard.left().onPressDo({ guerrero.mover(izquierda) })
+    keyboard.right().onPressDo({ guerrero.mover(derecha) })
+    keyboard.up().onPressDo({ guerrero.mover(arriba) })
+    keyboard.down().onPressDo({ guerrero.mover(abajo) })
+
+    keyboard.space().onPressDo({ guerrero.atacar() })
+    
+    animacionMovimientoGuerrero.start()
+    animacionMovimientoGoblin.start()
+    movimientoGoblin.start()
+    
+
+    game.start()
+}
