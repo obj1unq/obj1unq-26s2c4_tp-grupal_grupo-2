@@ -20,7 +20,7 @@ object nivel{
                    [a,_,p1,_,_,_,_,p1,_,_,a,_,_,_,a],
                    [a,_,_,_,_,_,_,_,_,_,_,_,_,_,a],
                    [a,a,a,a,a,a,a,a,a,a,a,a,a,a,a],
-                   [l,c,c,c,c,c,c,_,_,_,_,_,_,_,_]
+                   [l,c,c,c,c,c,c,_,_,_,_,i1,i2,i2,i3]
                 ].reverse()
 
     //    const fila = [p,m,_,_,_,_,m]
@@ -100,13 +100,6 @@ object p3{
     }
 }
 
-object d{
-    method poner(position){
-        goblin.position(position)
-        game.addVisual(goblin)
-    }
-}
-
 object l {
     method poner(position){
         game.addVisual(new Logo(image = "personaje.png", position = position))
@@ -125,5 +118,23 @@ object c {
 object m {
     method poner(position){
         game.addVisual(new Manzana(image = "manzana.png", position = position))
+    }
+}
+
+object i1 {
+    method poner(position){
+        game.addVisual(new Inventario(image = "inventario_1.png", position = position))
+    }
+}
+
+object i2 {
+    method poner(position){
+        game.addVisual(new Inventario(image = "inventario_2.png", position = position))
+    }
+}
+
+object i3 {
+    method poner(position){
+        game.addVisual(new Inventario(image = "inventario_3.png", position = position))
     }
 }
