@@ -4,7 +4,6 @@ _(Git Grupal: https://docs.google.com/presentation/d/1-o5zEUfuUT72ea8q2rk8mwHSqM
 
 ## Equipo de desarrollo
 
-- Leonardo Arjona
 - Braian Cadillac
 - Franco Soto
 
