@@ -30,3 +30,10 @@ class Logo inherits Imagen{
         return false 
     }
 }
+
+class Inventario inherits Imagen {
+
+    override method esAtravesable(){
+        return false
+    }
+}
