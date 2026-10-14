@@ -1,4 +1,5 @@
 import game.*
+import personajes.*
 
 
 class Frame {
@@ -73,6 +74,7 @@ class MuerteGoblin inherits Estado {
     override method siguienteFrame(frame, personaje) {
         if (frame.puedeAvanzar(maxFramesEstado)) {
             game.removeVisual(personaje)
+            generadorGoblins.eliminar(personaje)
         }
     }
 }

@@ -1,21 +1,26 @@
 import personajes.*
 import cosasEntorno.*
 import direcciones.*
+import vida.*
 
 object nivel{
+    const property posicionesPosiblesIzquierda = #{game.at(1,2), game.at(1,3), game.at(1,4), game.at(1,5), game.at(1,6), game.at(1,7), game.at(1,8), game.at(1,9)}
+    const property posicionesPosiblesAbajo     = #{game.at(2,2), game.at(3,2), game.at(4,2), game.at(5,2), game.at(6,2), game.at(7,2), game.at(8,2), game.at(9,2), game.at(11,2), game.at(12,2)}
+    const property posicionesPosiblesDerecha   = #{game.at(11,9), game.at(10,9), game.at(9,9), game.at(8,9), game.at(7,9), game.at(6,9), game.at(5,9), game.at(4,9), game.at(3,9)}
+    const property posicionesPosiblesArriba    = #{game.at(13,3),game.at(13,4),game.at(13,5),game.at(13,6),game.at(13,7),game.at(13,8),game.at(13,9)}
     const jugador = guerrero
     const mapa = [//0,1,2,3,4,5,6,7,8,9 
-                   [a,a,a,a,a,a,a,a,a,a],
-                   [a,_,p2,_,_,_,_,_,_,a],
-                   [a,_,_,_,p3,_,_,_,_,a],
-                   [a,_,_,_,_,_,_,p2,_,a],
-                   [a,p2,_,_,_,_,_,_,d,a],
-                   [a,_,_,_,_,_,a,_,_,a],
-                   [a,_,_,_,_,_,_,_,_,a],
-                   [a,_,_,_,_,_,_,p1,_,a],
-                   [a,g,p1,_,_,_,_,_,_,a],
-                   [a,a,a,a,a,a,a,a,a,a],
-                   [l,c,c,c,c,c,c,c,c,c]
+                   [a,a,a,a,a,a,a,a,a,a,a,a,a,a,a],
+                   [a,_,_,_,_,_,_,_,_,_,_,_,_,_,a],
+                   [a,_,p2,_,_,p3,_,_,_,a,_,_,p1,_,a],
+                   [a,_,_,_,_,_,_,p2,_,_,_, _,_,_,a],
+                   [a,_,p3,_,_,g,_,_,_,_,_,a,_,_,a],
+                   [a,_,_,_,_,_,a,_,_,_,_,_,_,_,a],
+                   [a,_,_,_,_,_,_,_,_,a,_,_,p2,_,a],
+                   [a,_,p1,_,_,_,_,p1,_,_,a,_,_,_,a],
+                   [a,_,_,_,_,_,_,_,_,_,_,_,_,_,a],
+                   [a,a,a,a,a,a,a,a,a,a,a,a,a,a,a],
+                   [l,c,c,c,c,c,c,_,_,_,_,_,_,_,_]
                 ].reverse()
 
     //    const fila = [p,m,_,_,_,_,m]
@@ -55,7 +60,7 @@ object nivel{
 
 object a{
     method poner(position){
-        game.addVisual(new Imagen(image = "pino.png", position = position))
+        game.addVisual(new Pino(image = "pino.png", position = position))
     }
 }
 
@@ -79,19 +84,19 @@ object g{
 
 object p1{
     method poner(position){
-        game.addVisual(new Imagen(image = "roca1_1.png", position = position))
+        game.addVisual(new Piedra(image = "roca1_1.png", position = position))
     }
 }
 
 object p2{
     method poner(position){
-        game.addVisual(new Imagen(image = "roca1_2.png", position = position))
+        game.addVisual(new Piedra(image = "roca1_2.png", position = position))
     }
 }
 
 object p3{
     method poner(position){
-        game.addVisual(new Imagen(image = "roca1_3.png", position = position))
+        game.addVisual(new Piedra(image = "roca1_3.png", position = position))
     }
 }
 
@@ -104,12 +109,21 @@ object d{
 
 object l {
     method poner(position){
-        game.addVisual(new Imagen(image = "personaje.png", position = position))
+        game.addVisual(new Logo(image = "personaje.png", position = position))
     }
 }
 
 object c {
+    var indice = 0
+
+    method poner(position) {
+        indice += 1
+        game.addVisual(new Corazon(position = position, indice = indice))
+    }
+}
+
+object m {
     method poner(position){
-        game.addVisual(new Imagen(image = "corazon_lleno_transparente.png", position = position))
+        game.addVisual(new Manzana(image = "manzana.png", position = position))
     }
 }

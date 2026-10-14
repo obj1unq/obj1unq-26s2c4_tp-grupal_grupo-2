@@ -1,3 +1,4 @@
+import vida.*
 import randomizer.*
 import wollok.game.*
 import personajes.*
@@ -13,9 +14,16 @@ program juego {
     nivel.dibujarMapa()
     //game.addVisual(guerrero)
     //game.addVisual(goblin)
-    const animacionMovimientoGoblin = game.tick(100, {goblin.posicionDeMira().siguienteFrame(goblin)}, false)
+    
     const animacionMovimientoGuerrero = game.tick(100, { guerrero.posicionDeMira().siguienteFrame(guerrero)}, false)
-    const movimientoGoblin = game.tick(1000, { goblin.mover(movimientoAutomatico.direccionRandom()) }, false)
+
+    const aparicionGoblins = game.tick(10000, {generadorGoblins.generar()}, false)
+    const animacionMovimientoGoblins = game.tick(100, {generadorGoblins.goblins().forEach({ goblin => goblin.posicionDeMira().siguienteFrame(goblin)})}, false)
+    const movimientoGoblins = game.tick(1500, {generadorGoblins.goblins().forEach({ goblin => goblin.perseguirGuerrero()})}, false)
+
+    const manzanasAleatorias = game.tick(22500, { generadorDeManzanas.generar() }, false)
+
+    keyboard.e().onPressDo({ guerrero.interactuar() })
 
     keyboard.left().onPressDo({ guerrero.mover(izquierda) })
     keyboard.right().onPressDo({ guerrero.mover(derecha) })
@@ -25,9 +33,12 @@ program juego {
     keyboard.space().onPressDo({ guerrero.atacar() })
     
     animacionMovimientoGuerrero.start()
-    animacionMovimientoGoblin.start()
-    movimientoGoblin.start()
+
+    animacionMovimientoGoblins.start()
+    movimientoGoblins.start()
     
+    manzanasAleatorias.start()
+    aparicionGoblins.start()
 
     game.start()
 }
