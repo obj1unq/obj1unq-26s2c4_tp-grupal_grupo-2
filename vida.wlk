@@ -81,7 +81,7 @@ class GeneradorManzana inherits Generador{
 class GeneradorPocion inherits Generador {
     var aparicion = 5
 
-    const pociones = #{fabricaPocionChica, fabricaPocionGrande}
+    const pociones = [fabricaPocionChica, fabricaPocionGrande]
 
     override method generar(cantidadDeMuertes, personaje){
         if(cantidadDeMuertes == aparicion){
