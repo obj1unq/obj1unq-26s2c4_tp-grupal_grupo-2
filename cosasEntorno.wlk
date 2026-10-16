@@ -37,3 +37,4 @@ class Inventario inherits Imagen {
         return false
     }
 }
+

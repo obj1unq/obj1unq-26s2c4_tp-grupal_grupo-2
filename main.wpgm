@@ -17,11 +17,11 @@ program juego {
     
     const animacionMovimientoGuerrero = game.tick(100, { guerrero.posicionDeMira().siguienteFrame(guerrero)}, false)
 
-    const aparicionGoblins = game.tick(10000, {generadorGoblins.generar()}, false)
+    const aparicionGoblins = game.tick(10000, {generadorGoblins.generar(0, guerrero)}, false)
     const animacionMovimientoGoblins = game.tick(100, {generadorGoblins.goblins().forEach({ goblin => goblin.posicionDeMira().siguienteFrame(goblin)})}, false)
     const movimientoGoblins = game.tick(1500, {generadorGoblins.goblins().forEach({ goblin => goblin.perseguirGuerrero()})}, false)
 
-    const manzanasAleatorias = game.tick(22500, { generadorDeManzanas.generar() }, false)
+    const manzanasAleatorias = game.tick(22500, { generadorDeManzanas.generar(0, guerrero) }, false)
 
     keyboard.e().onPressDo({ guerrero.interactuar() })
 
