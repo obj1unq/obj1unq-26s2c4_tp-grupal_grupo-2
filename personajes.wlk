@@ -273,6 +273,8 @@ class Goblin inherits Personaje {
 
 class GeneradorGoblins inherits Generador{
   var property goblins = #{}
+  var property cantidadMuertes = 0
+  var property capacidad 
   const posicionesPosibles = #{nivel.posicionesPosiblesAbajo(), nivel.posicionesPosiblesArriba(), nivel.posicionesPosiblesDerecha(), nivel.posicionesPosiblesIzquierda()}
 
   var posicionArriba    = new Frame(posicion = arriba)
@@ -282,14 +284,18 @@ class GeneradorGoblins inherits Generador{
 
   const posicionesDeMira = #{posicionArriba, posicionAbajo, posicionDerecha, posicionIzquierda}
 
-  override method generar(){
-    var posiciones = posicionesPosibles.anyOne()
-    const nuevoGoblin = new Goblin(position = posiciones.anyOne(), personaje = "goblin", nivel = nivelGoblin1, posicionDeMira = posicionesDeMira.anyOne())
-    goblins.add(nuevoGoblin)
-    game.addVisual(nuevoGoblin)
+  override method generar(cantidad, personaje){
+    if(cantidadMuertes < capacidad){
+      var posiciones = posicionesPosibles.anyOne()
+      const nuevoGoblin = new Goblin(position = posiciones.anyOne(), personaje = "goblin", nivel = nivelGoblin1, posicionDeMira = posicionesDeMira.anyOne())
+      goblins.add(nuevoGoblin)
+      game.addVisual(nuevoGoblin)
+    }
   }
 
   method eliminar(goblin) {
+    cantidadMuertes += 1
+    generadorDePociones.generar(cantidadMuertes, goblin)
     goblins.remove(goblin)
   }
 }
