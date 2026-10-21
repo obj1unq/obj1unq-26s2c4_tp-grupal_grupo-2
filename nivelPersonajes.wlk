@@ -12,8 +12,8 @@ class Nivel {
 
 
 
-var nivelGuerrero1  = new Nivel(nivel = 1, danio = 2)
-var nivelGoblin1    = new Nivel(nivel = 1, danio = 1)
+var nivelGuerrero  = new Nivel(nivel = 1, danio = 2)
+var nivelGoblin    = new Nivel(nivel = 1, danio = 1)
 
 //nivel 2....
 //nivel 3....

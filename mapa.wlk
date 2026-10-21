@@ -20,7 +20,7 @@ object nivel{
                    [a,_,p1,_,_,_,_,p1,_,_,a,_,_,_,a],
                    [a,_,_,_,_,_,_,_,_,_,_,_,_,_,a],
                    [a,a,a,a,a,a,a,a,a,a,a,a,a,a,a],
-                   [l,c,c,c,c,c,c,_,_,_,_,i1,i2,i2,i3]
+                   [l,c,c,c,c,c,c,_,_,_,_,i1,i2,i3,i4]
                 ].reverse()
 
     //    const fila = [p,m,_,_,_,_,m]
@@ -108,10 +108,17 @@ object l {
 
 object c {
     var indice = 0
+    var proximaPosicion = 7
 
     method poner(position) {
         indice += 1
         game.addVisual(new Corazon(position = position, indice = indice))
+    }
+
+    method agregarCorazon() {
+        indice += 1
+        game.addVisual(new Corazon(position = game.at(proximaPosicion, 0), indice = indice))
+        proximaPosicion += 1
     }
 }
 
@@ -121,20 +128,6 @@ object m {
     }
 }
 
-object i1 {
-    method poner(position){
-        game.addVisual(new Inventario(image = "inventario_1.png", position = position))
-    }
-}
 
-object i2 {
-    method poner(position){
-        game.addVisual(new Inventario(image = "inventario_2.png", position = position))
-    }
-}
 
-object i3 {
-    method poner(position){
-        game.addVisual(new Inventario(image = "inventario_3.png", position = position))
-    }
-}
+

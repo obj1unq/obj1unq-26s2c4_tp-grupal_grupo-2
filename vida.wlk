@@ -79,7 +79,7 @@ class GeneradorManzana inherits Generador{
 }
 
 class GeneradorPocion inherits Generador {
-    var aparicion = 5
+    var aparicion = 9
 
     const pociones = [fabricaPocionChica, fabricaPocionGrande]
 
@@ -87,11 +87,11 @@ class GeneradorPocion inherits Generador {
         if(cantidadDeMuertes == aparicion){
             var fabrica = pociones.anyOne()
             fabrica.generar(personaje.position())
-            aparicion += 5
+            aparicion += 9
         }
     }
-
 }
+
 var generadorDeManzanas = new GeneradorManzana(capacidad = 3)
 var generadorDePociones = new GeneradorPocion()
 
