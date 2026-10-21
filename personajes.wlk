@@ -53,10 +53,18 @@ class Personaje {
 
 
 class Guerrero inherits Personaje {
-  
-  var property posicionDeMira = posicionArriba
-  var vida                    = 6
-  var maxSaludDeNivel         = 6
+  const elementosCrafts          = #{}
+  var property posicionDeMira    = posicionArriba
+  var vida                       = 6
+  var property maxSaludDeNivel   = 6
+
+  method elementosCrafts(){
+    return elementosCrafts
+  }
+
+  method agregarElementoCraft(elemento){
+    elementosCrafts.add(elemento)
+  }
 
   method vida(){
     return vida
@@ -169,6 +177,27 @@ class Guerrero inherits Personaje {
 
   method sumaDeSalud(suministroDeSalud){
     return self.vida() + suministroDeSalud.energia()
+  }
+
+  method transformar(){
+    if(self.sePuedeTransformar()){
+      self.subirNivel()
+      elementosCrafts.clear()
+      inventarios.desocuparTodos()
+    }
+  }
+
+  method subirNivel(){
+    var nivelActual = self.nivel() //adasdaasdsafsafdsfgdsf dgs hfh shfh dfhdfzh dzfhzdfh fdh dzfh dzfh dfzhzdhdfzhdzfhdfzh
+    nivel = new Nivel(nivel = nivelActual.nivel() + 1, danio = nivelActual.danio() + 1)
+    maxSaludDeNivel = maxSaludDeNivel + 2
+    vida = maxSaludDeNivel
+    c.agregarCorazon()
+    c.agregarCorazon()
+  }
+
+  method sePuedeTransformar(){
+    return elementosCrafts.size() == 4
   }
 
   method redibujar() {
@@ -287,7 +316,7 @@ class GeneradorGoblins inherits Generador{
   override method generar(cantidad, personaje){
     if(cantidadMuertes < capacidad){
       var posiciones = posicionesPosibles.anyOne()
-      const nuevoGoblin = new Goblin(position = posiciones.anyOne(), personaje = "goblin", nivel = nivelGoblin1, posicionDeMira = posicionesDeMira.anyOne())
+      const nuevoGoblin = new Goblin(position = posiciones.anyOne(), personaje = "goblin", nivel = nivelGoblin, posicionDeMira = posicionesDeMira.anyOne())
       goblins.add(nuevoGoblin)
       game.addVisual(nuevoGoblin)
     }
@@ -296,6 +325,7 @@ class GeneradorGoblins inherits Generador{
   method eliminar(goblin) {
     cantidadMuertes += 1
     generadorDePociones.generar(cantidadMuertes, goblin)
+    generadorCrafteo.generar(cantidadMuertes, goblin)
     goblins.remove(goblin)
   }
 }
@@ -303,4 +333,4 @@ class GeneradorGoblins inherits Generador{
 var generadorGoblins = new GeneradorGoblins(capacidad = 20)
 
 
-var guerrero = new Guerrero(position = game.origin(), personaje = "guerrero", nivel = nivelGuerrero1)
+var guerrero = new Guerrero(position = game.origin(), personaje = "guerrero", nivel = nivelGuerrero)
