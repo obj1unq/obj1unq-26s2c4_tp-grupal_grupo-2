@@ -1,17 +1,23 @@
+
 import game.*
 import personajes.*
-
 
 class Frame {
     var property frameActual = 1
     var property posicion
 
     method image(personaje, nivel, estado) {
-        return posicion.nombre() + "_" + personaje + nivel.nivel() + estado.nombre() + "_" + frameActual + ".png"
+        return estado.image(personaje, nivel, posicion.nombre(), frameActual)
     }
 
     method siguienteFrame(personaje) {
-        personaje.estado().siguienteFrame(self, personaje)
+        const estadoActual = personaje.estado()
+
+        if (self.puedeAvanzar(estadoActual.maxFramesEstado())) {
+            if (estadoActual.finalizar(personaje)) {
+                self.reiniciar()
+            }
+        }
     }
 
     method puedeAvanzar(cantidadFrames) {
@@ -29,10 +35,7 @@ class Frame {
     method casilleroSiguiente(position) {
         return posicion.casilleroSiguiente(position)
     }
-
-
 }
-
 
 
 class Estado {
@@ -40,6 +43,10 @@ class Estado {
     const puedeMover
     const puedeAtacar
     const maxFramesEstado
+
+    method maxFramesEstado() {
+        return maxFramesEstado
+    }   
 
     method nombre() {
         return nombre
@@ -53,15 +60,16 @@ class Estado {
         return puedeAtacar
     }
 
-    method siguienteFrame(frame, personaje) {
-        if (frame.puedeAvanzar(maxFramesEstado)) {
-            personaje.estado(normal)
-            frame.reiniciar()
-        }
+    method finalizar(personaje) {
+        personaje.estado(normal)
+        return true
     }
 
-    
+    method image(personaje, nivel, direccion, numeroFrame) {
+        return direccion + "_" + personaje + nivel.nivel() + self.nombre() + "_" + numeroFrame + ".png"
+    }
 }
+
 
 class Normal inherits Estado {}
 
@@ -71,20 +79,26 @@ class Danio inherits Estado {}
 
 
 class MuerteGoblin inherits Estado {
-    override method siguienteFrame(frame, personaje) {
-        if (frame.puedeAvanzar(maxFramesEstado)) {
-            game.removeVisual(personaje)
-            generadorGoblins.eliminar(personaje)
-        }
+    override method finalizar(personaje) {
+        game.removeVisual(personaje)
+        generadorGoblins.eliminar(personaje)
+        return false
     }
 }
 
-class MuerteGuerrero inherits Estado {
 
-    override method siguienteFrame(frame, personaje) {
-        frame.puedeAvanzar(maxFramesEstado)
+class MuerteGuerrero inherits Estado {
+    override method finalizar(personaje) {
+        return false
     }
-    
+}
+
+
+class Transformacion inherits Estado {
+
+    override method image(personaje, nivel, direccion, numeroFrame) {
+        return personaje + "_" + self.nombre() + "_" + numeroFrame + ".png"
+    }
 }
 
 
@@ -97,3 +111,5 @@ var danio = new Danio(nombre = "danio", puedeMover = false, puedeAtacar = false,
 var muerteGoblin = new MuerteGoblin(nombre = "muerte", puedeMover = false, puedeAtacar = false, maxFramesEstado = 8)
 
 var muerteGuerrero = new MuerteGuerrero(nombre = "muerte", puedeMover = false, puedeAtacar = false, maxFramesEstado = 8)
+
+var transformacion = new Transformacion(nombre = "transformacion", puedeMover = false, puedeAtacar = false, maxFramesEstado = 2)
