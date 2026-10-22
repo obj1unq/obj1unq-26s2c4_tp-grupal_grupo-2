@@ -39,7 +39,9 @@ class Personaje {
     return position
   }
 
-  method image()
+  override method image() {
+    return posicionDeMira.image(personaje, nivel, estado)
+}
 
   method mover(direccion) 
 
@@ -99,9 +101,9 @@ class Guerrero inherits Personaje {
     }
   }
 
-  override method image() {
-    return posicionDeMira.image(personaje, nivel, estado)
-  }
+  //override method image() {
+  //  return estado.image(personaje, nivel, posicionDeMira)
+  //}
 
 
   override method mover(direccion) {
@@ -179,16 +181,18 @@ class Guerrero inherits Personaje {
     return self.vida() + suministroDeSalud.energia()
   }
 
-  method transformar(){
-    if(self.sePuedeTransformar()){
-      self.subirNivel()
-      elementosCrafts.clear()
-      inventarios.desocuparTodos()
+  method transformar() {
+    if (self.sePuedeTransformar()) {
+        estado = transformacion
+        posicionDeMira.reiniciar()
+        self.subirNivel()
+        elementosCrafts.clear()
+        inventarios.desocuparTodos()
     }
   }
 
   method subirNivel(){
-    var nivelActual = self.nivel() //adasdaasdsafsafdsfgdsf dgs hfh shfh dfhdfzh dzfhzdfh fdh dzfh dzfh dfzhzdhdfzhdzfhdfzh
+    var nivelActual = self.nivel()
     nivel = new Nivel(nivel = nivelActual.nivel() + 1, danio = nivelActual.danio() + 1)
     maxSaludDeNivel = maxSaludDeNivel + 2
     vida = maxSaludDeNivel
@@ -247,9 +251,9 @@ class Goblin inherits Personaje {
     }
   }
 
-  override method image() {
-    return posicionDeMira.image(personaje, nivel, estado)
-  }
+  //override method image() {
+  //  return posicionDeMira.image(personaje, nivel, estado)
+  //}
 
   method recibirDanio(){
     estado = danio
