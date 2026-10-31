@@ -17,36 +17,69 @@ object fondoMenu {
   method position() = game.origin()
 }
 
+object pantallaControles {
+  method image() = "pantalla_controles.png"
+  method position() = game.origin()
+}
+
 object menu {
+  var property pantallaActual = "menu"
+
   method mostrar() {
     game.width(15)
     game.height(11)
     game.cellSize(50)
     game.title("Goblin Slayer")
-  
-    // El pasto queda como fondo permanente
     game.boardGround("fondo1.jpg")
-  
-    // La imagen del menú se dibuja por encima
+
+    pantallaActual = "menu"
+
     game.addVisual(fondoMenu)
-  
     game.addVisual(botonStart)
     game.addVisual(botonControles)
-  
-    keyboard.enter().onPressDo({ menu.iniciarJuego() })
-    keyboard.c().onPressDo({ menu.mostrarControles() })
+
+    keyboard.enter().onPressDo({ menu.confirmar() })
+    keyboard.c().onPressDo({ menu.abrirControles() })
+  }
+
+  method confirmar() {
+    if (pantallaActual == "menu") {
+      menu.iniciarJuego()
+    } else {
+      menu.volverMenu()
+    }
+  }
+
+  method abrirControles() {
+    if (pantallaActual == "menu") {
+      pantallaActual = "controles"
+
+      game.removeVisual(fondoMenu)
+      game.removeVisual(botonStart)
+      game.removeVisual(botonControles)
+
+      game.addVisual(pantallaControles)
+    }
+  }
+
+  method volverMenu() {
+    game.removeVisual(pantallaControles)
+
+    pantallaActual = "menu"
+
+    game.addVisual(fondoMenu)
+    game.addVisual(botonStart)
+    game.addVisual(botonControles)
   }
 
   method iniciarJuego() {
+    pantallaActual = "juego"
+
     game.removeVisual(fondoMenu)
     game.removeVisual(botonStart)
     game.removeVisual(botonControles)
 
     inicializador.preparar()
     inicializador.iniciarTicks()
-  }
-
-  method mostrarControles() {
-    game.say(botonControles, "Flechas: mover | E: interactuar | T: transformar | Espacio: atacar")
   }
 }
