@@ -1,5 +1,4 @@
 import vida.*
-import randomizer.*
 import wollok.game.*
 import personajes.*
 import direcciones.*

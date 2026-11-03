@@ -43,12 +43,22 @@ object menu {
   }
 
   method confirmar() {
+    self.menu()
+    self.controles()
+  }
+
+  method menu(){
     if (pantallaActual == "menu") {
-      menu.iniciarJuego()
-    } else {
-      menu.volverMenu()
+        menu.iniciarJuego()
     }
   }
+
+  method controles(){
+    if (pantallaActual == "controles") {
+        menu.volverMenu()
+    }
+  }
+
 
   method abrirControles() {
     if (pantallaActual == "menu") {

@@ -13,6 +13,7 @@ class Personaje {
   var property nivel
   var property esAtravesable = false
   var property estado = normal
+  var property posicionDeMira
 
   var posicionArriba    = new Frame(posicion = arriba)
   var posicionAbajo     = new Frame(posicion = abajo)
@@ -39,9 +40,9 @@ class Personaje {
     return position
   }
 
-  override method image() {
+  method image() {
     return posicionDeMira.image(personaje, nivel, estado)
-}
+  }
 
   method mover(direccion) 
 
@@ -56,7 +57,6 @@ class Personaje {
 
 class Guerrero inherits Personaje {
   const elementosCrafts          = #{}
-  var property posicionDeMira    = posicionArriba
   var vida                       = 6
   var property maxSaludDeNivel   = 6
 
@@ -215,7 +215,6 @@ class Guerrero inherits Personaje {
 
 class Goblin inherits Personaje {
   const enemigo = guerrero
-  var property posicionDeMira 
   var vida = 6
 
   method vida(){
@@ -337,4 +336,4 @@ class GeneradorGoblins inherits Generador{
 var generadorGoblins = new GeneradorGoblins(capacidad = 20)
 
 
-var guerrero = new Guerrero(position = game.origin(), personaje = "guerrero", nivel = nivelGuerrero)
+var guerrero = new Guerrero(posicionDeMira = new Frame(posicion = arriba), position = game.origin(), personaje = "guerrero", nivel = nivelGuerrero)
