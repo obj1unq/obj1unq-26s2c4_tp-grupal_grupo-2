@@ -1,135 +1,236 @@
+
 import wollok.game.*
 import inicializador.*
 import personajes.*
 
+// --------------------------------
+// ELEMENTOS VISUALES
+// --------------------------------
 
-
-object botonStart {
-  method image() = "boton_start.png"
-  method position() = game.at(5, 5)
+class Menu {
+  var property image
+  var property position
 }
 
-object botonControles {
-  method image() = "boton_controles.png"
-  method position() = game.at(5, 3)
+const botonStart = new Menu(image = "boton_start.png", position = game.at(5, 5))
+const botonControles = new Menu(image = "boton_controles.png", position = game.at(5, 3))
+const fondoMenu = new Menu(image = "fondo_menu.png", position = game.origin())
+const pantallaControles = new Menu(image = "pantalla_controles.png", position = game.origin())
+const pantallaGameOver = new Menu(image = "pantalla_game_over.png", position = game.origin())
+
+
+// --------------------------------
+// CLASE PADRE
+// --------------------------------
+
+class Pantalla {
+  method mostrar()
+
+  method ocultar()
+
+  method confirmar()
+
+  method volver()
+
+  method abrirControles()
+
+  method detectarMuerte()
+
+  method reintentar()
 }
 
-object fondoMenu {
-  method image() = "fondo_menu.png"
-  method position() = game.origin()
+
+// --------------------------------
+// PANTALLA PRINCIPAL
+// --------------------------------
+
+class MenuPrincipal inherits Pantalla {
+
+  override method mostrar() {
+    game.addVisual(fondoMenu)
+    game.addVisual(botonStart)
+    game.addVisual(botonControles)
+  }
+
+  override method ocultar() {
+    game.removeVisual(fondoMenu)
+    game.removeVisual(botonStart)
+    game.removeVisual(botonControles)
+  }
+
+  override method confirmar() {
+    menu.cambiarPantalla(juego)
+  }
+
+  override method abrirControles() {
+    menu.cambiarPantalla(controles)
+  }
+
+  override method volver() {}
+
+  override method detectarMuerte() {}
+
+  override method reintentar() {}
 }
 
-object pantallaControles {
-  method image() = "pantalla_controles.png"
-  method position() = game.origin()
+
+// --------------------------------
+// PANTALLA DE CONTROLES
+// --------------------------------
+
+class Control inherits Pantalla {
+
+  override method mostrar() {
+    game.addVisual(pantallaControles)
+  }
+
+  override method ocultar() {
+    game.removeVisual(pantallaControles)
+  }
+
+  override method confirmar() {
+    self.volver()
+  }
+
+  override method volver() {
+    menu.cambiarPantalla(menuPrincipal)
+  }
+
+  override method abrirControles() {}
+
+  override method detectarMuerte() {}
+
+  override method reintentar() {}
 }
 
-object pantallaGameOver {
-  method image() = "pantalla_game_over.png"
-  method position() = game.origin()
+
+// --------------------------------
+// PANTALLA DE JUEGO
+// --------------------------------
+
+class Juego inherits Pantalla {
+
+  override method mostrar() {
+    inicializador.preparar()
+    inicializador.iniciarTicks()
+    menu.iniciarDeteccionGameOver()
+  }
+
+  override method ocultar() {
+    inicializador.detenerTicks()
+    menu.detenerDeteccionGameOver()
+  }
+
+  override method confirmar() {}
+
+  override method volver() {}
+
+  override method abrirControles() {}
+
+  override method detectarMuerte() {
+    if (guerrero.vida() <= 0) {
+      menu.cambiarPantalla(gameOver)
+    }
+  }
+
+  override method reintentar() {}
 }
+
+
+// --------------------------------
+// PANTALLA GAME OVER
+// --------------------------------
+
+class GameOver inherits Pantalla {
+
+  override method mostrar() {
+    game.addVisual(pantallaGameOver)
+  }
+
+  override method ocultar() {
+    game.removeVisual(pantallaGameOver)
+  }
+
+  override method confirmar() {}
+
+  override method volver() {
+    menu.cambiarPantalla(menuPrincipal)
+  }
+
+  override method abrirControles() {}
+
+  override method detectarMuerte() {}
+
+  override method reintentar() {}
+}
+
+
+// --------------------------------
+// OBJETOS CONCRETOS
+// --------------------------------
+
+const menuPrincipal = new MenuPrincipal()
+const controles     = new Control()
+const juego         = new Juego()
+const gameOver      = new GameOver()
+
+
+// --------------------------------
+// GESTOR DE PANTALLAS
+// --------------------------------
 
 object menu {
-  var property pantallaActual = "menu"
-  const detectarGameOver = game.tick(100, { menu.detectarMuerte() }, false)
+
+  var pantallaActual = menuPrincipal
+
+  const detectarGameOver = game.tick(1300, { self.detectarMuerte() }, false)
 
   method mostrar() {
     game.width(15)
     game.height(11)
     game.cellSize(50)
-    game.title("Goblin Slayer")
+    game.title("Orc Slayer")
     game.boardGround("fondo1.jpg")
 
-    pantallaActual = "menu"
+    pantallaActual.mostrar()
 
-    game.addVisual(fondoMenu)
-    game.addVisual(botonStart)
-    game.addVisual(botonControles)
+    keyboard.enter().onPressDo({ self.confirmar() })
+    keyboard.c().onPressDo({ self.abrirControles() })
+    keyboard.m().onPressDo({ self.volver() })
+    //keyboard.r().onPressDo({ self.reintentar() })
+  }
 
-    keyboard.enter().onPressDo({ menu.confirmar() })
-    keyboard.c().onPressDo({ menu.abrirControles() })
+  method cambiarPantalla(nuevaPantalla) {
+    pantallaActual.ocultar()
+    pantallaActual = nuevaPantalla
+    pantallaActual.mostrar()
   }
 
   method confirmar() {
-    self.menu()
-    self.controles()
+    pantallaActual.confirmar()
   }
-
-  method menu(){
-    if (pantallaActual == "menu") {
-        menu.iniciarJuego()
-    }
-  }
-
-  method controles(){
-    if (pantallaActual == "controles") {
-        menu.volverMenu()
-    }
-  }
-
 
   method abrirControles() {
-    if (pantallaActual == "menu") {
-      pantallaActual = "controles"
-
-      game.removeVisual(fondoMenu)
-      game.removeVisual(botonStart)
-      game.removeVisual(botonControles)
-
-      game.addVisual(pantallaControles)
-    }
+    pantallaActual.abrirControles()
   }
 
-  method volverMenu() {
-    game.removeVisual(pantallaControles)
-
-    pantallaActual = "menu"
-
-    game.addVisual(fondoMenu)
-    game.addVisual(botonStart)
-    game.addVisual(botonControles)
-  }
-
-  method iniciarJuego() {
-    pantallaActual = "juego"
-
-    game.removeVisual(fondoMenu)
-    game.removeVisual(botonStart)
-    game.removeVisual(botonControles)
-
-    inicializador.preparar()
-    inicializador.iniciarTicks()
-    detectarGameOver.start()
+  method volver() {
+    pantallaActual.volver()
   }
 
   method detectarMuerte() {
-    if (pantallaActual == "juego") {
-      if (guerrero.vida() <= 0) {
-        self.mostrarGameOver()
-      }
-    }
+    pantallaActual.detectarMuerte()
   }
 
-  method mostrarGameOver() {
-    pantallaActual = "gameOver"
-
-    inicializador.detenerTicks()
-
-    game.addVisual(pantallaGameOver)
-    //keyboard.r().onPressDo({ menu.reintentar() })
-    keyboard.m().onPressDo({ menu.volverMenuPrincipal() })
+  method iniciarDeteccionGameOver() {
+    detectarGameOver.start()
   }
 
-  method volverMenuPrincipal() {
-    if (pantallaActual == "gameOver") {
-      game.removeVisual(pantallaGameOver)
-
-      pantallaActual = "menu"
-
-      game.addVisual(fondoMenu)
-      game.addVisual(botonStart)
-      game.addVisual(botonControles)
-    }
+  method detenerDeteccionGameOver() {
+    detectarGameOver.stop()
   }
 
+  //method reintentar() {
+  //  pantallaActual.reintentar()
+  //}
 }
