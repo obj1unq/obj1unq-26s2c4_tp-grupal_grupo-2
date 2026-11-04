@@ -61,6 +61,8 @@ class PocionChica inherits PocionGrande {
 class Generador {
 
     method generar(cantidad, personaje)
+
+    method reiniciar(){}
 }
 
 class GeneradorManzana inherits Generador{
@@ -76,6 +78,10 @@ class GeneradorManzana inherits Generador{
             game.addVisual(manzana)
         }
     }
+
+    override method reiniciar() {
+        contador = 0
+    }
 }
 
 class GeneradorPocion inherits Generador {
@@ -89,6 +95,10 @@ class GeneradorPocion inherits Generador {
             fabrica.generar(personaje.position())
             aparicion += 9
         }
+    }
+
+    override method reiniciar() {
+        aparicion = 9
     }
 }
 
@@ -109,6 +119,5 @@ object fabricaPocionGrande {
         var pocionGrande = new PocionGrande(image = "pocion_2.png", position = _position)
         game.addVisual(pocionGrande)
     }
-
 }
 

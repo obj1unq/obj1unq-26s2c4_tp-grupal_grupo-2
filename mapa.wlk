@@ -70,7 +70,7 @@ object _{
     }
 }
 
-object g{
+object g {
     method poner(position){
         guerrero.position(position)
         game.addVisual(guerrero)
@@ -80,7 +80,6 @@ object g{
         guerrero.redibujar()
     }
 }
-
 
 object p1{
     method poner(position){
@@ -119,6 +118,11 @@ object c {
         indice += 1
         game.addVisual(new Corazon(position = game.at(proximaPosicion, 0), indice = indice))
         proximaPosicion += 1
+    }
+
+    method reiniciar() {
+        indice = 0
+        proximaPosicion = 7
     }
 }
 

@@ -45,21 +45,7 @@ object inicializador {
     false
   )
 
-  method preparar() {
-    nivel.dibujarMapa()
-
-    keyboard.e().onPressDo({ guerrero.interactuar() })
-    keyboard.t().onPressDo({ guerrero.transformar() })
-  
-    keyboard.left().onPressDo({ guerrero.mover(izquierda) })
-    keyboard.right().onPressDo({ guerrero.mover(derecha) })
-    keyboard.up().onPressDo({ guerrero.mover(arriba) })
-    keyboard.down().onPressDo({ guerrero.mover(abajo) })
-  
-    keyboard.space().onPressDo({ guerrero.atacar() })
-  }
-
-  method iniciarTicks() {
+    method iniciarTicks() {
     animacionMovimientoGuerrero.start()
     animacionMovimientoGoblins.start()
     movimientoGoblins.start()
@@ -73,5 +59,19 @@ object inicializador {
     animacionMovimientoGoblins.stop()
     movimientoGoblins.stop()
     manzanasAleatorias.stop()
+  }
+
+  method preparar() {
+    nivel.dibujarMapa()
+
+    keyboard.e().onPressDo({ guerrero.interactuar() })
+    keyboard.t().onPressDo({ guerrero.transformar() })
+
+    keyboard.left().onPressDo({ guerrero.mover(izquierda) })
+    keyboard.right().onPressDo({ guerrero.mover(derecha) })
+    keyboard.up().onPressDo({ guerrero.mover(arriba) })
+    keyboard.down().onPressDo({ guerrero.mover(abajo) })
+
+    keyboard.space().onPressDo({ guerrero.atacar() })
   }
 }

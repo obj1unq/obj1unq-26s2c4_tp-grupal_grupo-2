@@ -48,10 +48,8 @@ class Personaje {
 
   method atacar()
 
-  method chocar(entidad){
-  
-  }
-  
+  method chocar(entidad){}
+
 }
 
 
@@ -208,7 +206,6 @@ class Guerrero inherits Personaje {
     game.removeVisual(self)
     game.addVisual(self)
   }
-
 }
 
 
@@ -331,6 +328,7 @@ class GeneradorGoblins inherits Generador{
     generadorCrafteo.generar(cantidadMuertes, goblin)
     goblins.remove(goblin)
   }
+
 }
 
 var generadorGoblins = new GeneradorGoblins(capacidad = 20)
