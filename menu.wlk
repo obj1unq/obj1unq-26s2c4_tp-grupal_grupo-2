@@ -1,5 +1,7 @@
 import wollok.game.*
 import inicializador.*
+import personajes.*
+
 
 
 object botonStart {
@@ -22,8 +24,14 @@ object pantallaControles {
   method position() = game.origin()
 }
 
+object pantallaGameOver {
+  method image() = "pantalla_game_over.png"
+  method position() = game.origin()
+}
+
 object menu {
   var property pantallaActual = "menu"
+  const detectarGameOver = game.tick(100, { menu.detectarMuerte() }, false)
 
   method mostrar() {
     game.width(15)
@@ -91,5 +99,37 @@ object menu {
 
     inicializador.preparar()
     inicializador.iniciarTicks()
+    detectarGameOver.start()
   }
+
+  method detectarMuerte() {
+    if (pantallaActual == "juego") {
+      if (guerrero.vida() <= 0) {
+        self.mostrarGameOver()
+      }
+    }
+  }
+
+  method mostrarGameOver() {
+    pantallaActual = "gameOver"
+
+    inicializador.detenerTicks()
+
+    game.addVisual(pantallaGameOver)
+    //keyboard.r().onPressDo({ menu.reintentar() })
+    keyboard.m().onPressDo({ menu.volverMenuPrincipal() })
+  }
+
+  method volverMenuPrincipal() {
+    if (pantallaActual == "gameOver") {
+      game.removeVisual(pantallaGameOver)
+
+      pantallaActual = "menu"
+
+      game.addVisual(fondoMenu)
+      game.addVisual(botonStart)
+      game.addVisual(botonControles)
+    }
+  }
+
 }
