@@ -66,4 +66,12 @@ object inicializador {
     manzanasAleatorias.start()
     aparicionGoblins.start()
   }
+
+  method detenerTicks() {
+    animacionMovimientoGuerrero.stop()
+    aparicionGoblins.stop()
+    animacionMovimientoGoblins.stop()
+    movimientoGoblins.stop()
+    manzanasAleatorias.stop()
+  }
 }
