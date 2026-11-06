@@ -11,52 +11,103 @@ class Personaje {
   var property position
   var property personaje
   var property nivel
-  var property esAtravesable = false
-  var property estado = normal
-  var property posicionDeMira
+  var property esAtravesable   = false
+  var property estado 
+  const estados
+  var property direccionActual = abajo
+  var vida                     = 6
 
-  var posicionArriba    = new Frame(posicion = arriba)
-  var posicionAbajo     = new Frame(posicion = abajo)
-  var posicionDerecha   = new Frame(posicion = derecha)
-  var posicionIzquierda = new Frame(posicion = izquierda)
-
-  method posicionArriba() {
-    return posicionArriba
-  }
-
-  method posicionAbajo() {
-    return posicionAbajo
-  }
-
-  method posicionDerecha() {
-    return posicionDerecha
-  }
-
-  method posicionIzquierda() {
-    return posicionIzquierda
+  method vida() {
+      return vida
   }
 
   method position() {
     return position
   }
 
-  method image() {
-    return posicionDeMira.image(personaje, nivel, estado)
+  method normal(){
+    return estados.normal()
   }
 
-  method mover(direccion) 
+  method ataque(){
+    return estados.ataque()
+  }
 
-  method atacar()
+  method danio(){
+    return estados.danio()
+  }
+
+  method transformacion(){
+    return estados.transformacion()
+  }
+
+  method muerte(){
+    return estados.muerte()
+  }
+
+
+  method image() {
+    return estado.image(personaje, nivel, direccionActual.nombre())
+  }
 
   method chocar(entidad){}
+
+  method cambiarEstado(_estado){
+    estado = _estado
+    estado.reiniciarAnimacion()
+  }
+
+  method estaMuerto(){
+    return vida == 0
+  }
+
+  method validarMuerte(){
+    self.muerte().muerte(self)
+}
+
+  method puedePerderEnergia(){
+    return vida > 0
+  }
+
+  
+
+  
+
+  method vida(danio){
+    vida -= danio
+  }
+
+  method perderEnergia(danio){
+    self.vida(danio)
+    self.validarMuerte()
+  }
+
+  method ejecutarAtaque(){}
+
+  method cambiarDireccion(direccion){
+    direccionActual = direccion
+  }
+
+  method atacar() {
+    self.ataque().atacar(self)
+  }
+
+  method mover(direccion) {
+    estado.mover(direccion, self)
+  }
+
+  method recibirDanio() {
+    self.danio().recibirDanio(self)
+  }
+
 
 }
 
 
 class Guerrero inherits Personaje {
   const elementosCrafts          = #{}
-  var vida                       = 6
   var property maxSaludDeNivel   = 6
+
 
   method elementosCrafts(){
     return elementosCrafts
@@ -66,73 +117,25 @@ class Guerrero inherits Personaje {
     elementosCrafts.add(elemento)
   }
 
-  method vida(){
-    return vida
-  }
-
-  method vida(danio){
-    vida -= danio
-  }
-
   method sumarVida(_vida){
     vida += _vida
   }
   
-  override method atacar() {
-      if(estado.puedeAtacar()) {
-        estado = ataque
-        posicionDeMira.reiniciar()
-        self.validarEnemigo()
-     }
-  }
-
+  method fijarEnemigo(enemigo, casillero) {
+    if (enemigo.position() == casillero) {
+        enemigo.recibirDanio()
+        nivel.perderEnergia(enemigo)
+    }
+}
 
   method validarEnemigo() {
-    const casilleroAtaque = posicionDeMira.casilleroSiguiente(position)
+    const casilleroAtaque = direccionActual.siguiente(position)
     generadorGoblins.goblins().forEach({ enemigo => self.fijarEnemigo(enemigo, casilleroAtaque) })
   }
 
-  method fijarEnemigo(enemigo, casillero){
-    if (enemigo.position() == casillero) {
-      enemigo.recibirDanio()
-      nivel.perderEnergia(enemigo)
-    }
+  override method ejecutarAtaque() {
+    self.validarEnemigo()
   }
-
-  //override method image() {
-  //  return estado.image(personaje, nivel, posicionDeMira)
-  //}
-
-
-  override method mover(direccion) {
-    if(estado.puedeMover()) {
-        const nuevaPosicion = direccion.siguiente(position, self)
-        const objetos = game.getObjectsIn(nuevaPosicion)
-        direccion.validarNuevaPosicion(self, nuevaPosicion, objetos)
-    }
-  }
-
-  
-  method recibirDanio() {
-      if (vida > 0) {
-          estado = danio
-          posicionDeMira.reiniciar()
-      }
-  }
-
-
-  method perderEnergia(danio){
-    self.vida(danio)
-    self.validarMuerte()
-  }
-
-  method validarMuerte(){
-    if(vida == 0){
-      estado = muerteGuerrero
-      posicionDeMira.reiniciar()
-    }
-  }
-
 
 
   //Interactua con objetos en la misma posicion que el personaje guerrero
@@ -150,56 +153,36 @@ class Guerrero inherits Personaje {
   }
 
   method aumentarSalud(suministroDeSalud){
-    if(self.puedeAumentarSalud()){
-      self.aumentar(suministroDeSalud)
-    }
+      suministroDeSalud.aumentar(self)
   }
 
-  method aumentar(suministroDeSalud){
-    if(self.sumaDeSalud(suministroDeSalud) <= maxSaludDeNivel){
-      self.sumarVida(suministroDeSalud.energia())
-      suministroDeSalud.remover()
-      
-    }
-    else {
-      self.sumarVida(self.restaDeSalud())
-      suministroDeSalud.remover()
-    }
-  }
-
-  method puedeAumentarSalud(){
-    return self.vida() < maxSaludDeNivel
-  }
+  method puedeAumentar(){
+    return self.vida() < self.maxSaludDeNivel()
+}
 
   method restaDeSalud(){
-    return maxSaludDeNivel - self.vida()
+    return maxSaludDeNivel - vida
   }
 
-  method sumaDeSalud(suministroDeSalud){
-    return self.vida() + suministroDeSalud.energia()
-  }
 
   method transformar() {
-    if (self.sePuedeTransformar()) {
-        estado = transformacion
-        posicionDeMira.reiniciar()
-        self.subirNivel()
-        elementosCrafts.clear()
-        inventarios.desocuparTodos()
-    }
+    self.transformacion().transformar(self, nivel)
   }
 
-  method subirNivel(){
-    var nivelActual = self.nivel()
-    nivel = new Nivel(nivel = nivelActual.nivel() + 1, danio = nivelActual.danio() + 1)
-    maxSaludDeNivel = maxSaludDeNivel + 2
-    vida = maxSaludDeNivel
-    c.agregarCorazon()
-    c.agregarCorazon()
+  method craftear(){
+    elementosCrafts.clear()
   }
 
   method sePuedeTransformar(){
     return elementosCrafts.size() == 4
+  }
+
+  method subirNivel(nuevoNivel){
+    nivel = nuevoNivel
+    maxSaludDeNivel += 2
+    vida = maxSaludDeNivel
+    c.agregarCorazon()
+    c.agregarCorazon()
   }
 
   method redibujar() {
@@ -208,130 +191,91 @@ class Guerrero inherits Personaje {
   }
 }
 
-
-
 class Goblin inherits Personaje {
   const enemigo = guerrero
-  var vida = 6
 
-  method vida(){
-    return vida
-  }
-
-  method vida(danio){
-    vida -= danio
-  }
-
-  override method atacar() {
-      if(estado.puedeAtacar()) {
-        estado = ataque
-        posicionDeMira.reiniciar()
-
-    }
-  }
   override method mover(direccion) {
-    if(estado.puedeMover()) {
-      const nuevaPosicion = direccion.siguiente(position, self)
-      const objetos = game.getObjectsIn(nuevaPosicion)
-      self.validarEnemigo()
-      direccion.validarNuevaPosicion(self, nuevaPosicion, objetos)
+      super(direccion)
+      self.atacarGuerrero()
+  }
+
+  method atacarGuerrero() {
+    const casilleroAtaque = direccionActual.siguiente(position)
+
+    if (enemigo.position() == casilleroAtaque) {
+        self.atacar()
     }
   }
 
-  method validarEnemigo(){
-    const casilleroAtaque = posicionDeMira.casilleroSiguiente(position)
-    if(enemigo.position() == casilleroAtaque) {
-      self.atacar()
-      enemigo.recibirDanio()
-      nivel.perderEnergia(enemigo)
-    }
+  override method ejecutarAtaque() {
+    enemigo.recibirDanio()
+    nivel.perderEnergia(enemigo)
   }
 
-  //override method image() {
-  //  return posicionDeMira.image(personaje, nivel, estado)
-  //}
-
-  method recibirDanio(){
-    estado = danio
-    posicionDeMira.reiniciar()
-  }
-
-  method perderEnergia(danio){
-    self.vida(danio)
-    self.validarMuerte()
-  }
-
-  method validarMuerte(){
-    if(vida == 0){
-      estado = muerteGoblin
-      posicionDeMira.reiniciar()
-    }
-  }
-
-  
   method perseguirGuerrero() {
-    self.perseguirDerecha()
-    self.perseguirIzquierda()
-    self.perseguirArriba()
-    self.perseguirAbajo()
+      self.perseguirDerecha()
+      self.perseguirIzquierda()
+      self.perseguirArriba()
+      self.perseguirAbajo()
   }
 
-  method perseguirDerecha(){
-    if (position.x() < guerrero.position().x()) {
-      self.mover(derecha)
-    }
+  method perseguirDerecha() {
+      if (position.x() < guerrero.position().x()) {
+          self.mover(derecha)
+      }
   }
-  method perseguirIzquierda(){
-    if (position.x() > guerrero.position().x()) {
-      self.mover(izquierda)
-    }
+
+  method perseguirIzquierda() {
+      if (position.x() > guerrero.position().x()) {
+          self.mover(izquierda)
+      }
   }
-  method perseguirArriba(){
-    if (position.y() < guerrero.position().y()) {
-      self.mover(arriba)
-    }
+
+  method perseguirArriba() {
+      if (position.y() < guerrero.position().y()) {
+          self.mover(arriba)
+      }
   }
-  method perseguirAbajo(){
-    if (position.y() > guerrero.position().y()) {
-      self.mover(abajo)
-    }
+
+  method perseguirAbajo() {
+      if (position.y() > guerrero.position().y()) {
+          self.mover(abajo)
+      }
   }
 
 }
 
 
-class GeneradorGoblins inherits Generador{
+class GeneradorGoblins inherits Generador {
   var property goblins = #{}
   var property cantidadMuertes = 0
-  var property capacidad 
-  const posicionesPosibles = #{nivel.posicionesPosiblesAbajo(), nivel.posicionesPosiblesArriba(), nivel.posicionesPosiblesDerecha(), nivel.posicionesPosiblesIzquierda()}
-
-  var posicionArriba    = new Frame(posicion = arriba)
-  var posicionAbajo     = new Frame(posicion = abajo)
-  var posicionDerecha   = new Frame(posicion = derecha)
-  var posicionIzquierda = new Frame(posicion = izquierda)
-
-  const posicionesDeMira = #{posicionArriba, posicionAbajo, posicionDerecha, posicionIzquierda}
-
-  override method generar(cantidad, personaje){
-    if(cantidadMuertes < capacidad){
-      var posiciones = posicionesPosibles.anyOne()
-      const nuevoGoblin = new Goblin(position = posiciones.anyOne(), personaje = "goblin", nivel = nivelGoblin, posicionDeMira = posicionesDeMira.anyOne())
-      goblins.add(nuevoGoblin)
-      game.addVisual(nuevoGoblin)
-    }
+  var property capacidad
+  const posicionesPosibles = #{
+      nivel.posicionesPosiblesAbajo(),
+      nivel.posicionesPosiblesArriba(),
+      nivel.posicionesPosiblesDerecha(),
+      nivel.posicionesPosiblesIzquierda()
   }
-
+  override method generar(cantidad, personaje) {
+      if (cantidadMuertes < capacidad) {
+          var posiciones = posicionesPosibles.anyOne()
+          const estadosGoblin = new EstadoGoblin()
+          
+          const nuevoGoblin = new Goblin(estados = estadosGoblin, estado = estadosGoblin.normal(), position = posiciones.anyOne(), personaje = "goblin", nivel = nivelGoblin)
+          goblins.add(nuevoGoblin)
+          game.addVisual(nuevoGoblin)
+      }
+  }
   method eliminar(goblin) {
-    cantidadMuertes += 1
-    generadorDePociones.generar(cantidadMuertes, goblin)
-    generadorCrafteo.generar(cantidadMuertes, goblin)
-    goblins.remove(goblin)
+      cantidadMuertes += 1
+      generadorDePociones.generar(cantidadMuertes, goblin)
+      generadorCrafteo.generar(cantidadMuertes, goblin)
+      goblins.remove(goblin)
   }
-
 }
 
 var generadorGoblins = new GeneradorGoblins(capacidad = 20)
 
+var estadosGuerrero = new EstadoGuerrero()
 
-var guerrero = new Guerrero(posicionDeMira = new Frame(posicion = arriba), position = game.origin(), personaje = "guerrero", nivel = nivelGuerrero)
+var guerrero = new Guerrero(estados = estadosGuerrero, estado = estadosGuerrero.normal(), position = game.origin(), personaje = "guerrero", nivel = nivelGuerrero)

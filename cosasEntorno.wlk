@@ -54,12 +54,12 @@ class Inventario inherits Imagen {
 
 
 class GeneradorCraft inherits Generador{
-    var aparicion   = 5
+    var aparicion   = 1
     const elementos = [espada, collar, botas, lingote] 
 
     override method generar(cantidadDeMuertes, personaje) {
         if (aparicion == cantidadDeMuertes && not elementos.isEmpty()) {
-            aparicion += 5
+            aparicion += 1
 
             const elemento = elementos.anyOne()
             elementos.remove(elemento)

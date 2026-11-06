@@ -1,6 +1,7 @@
 import game.*
 import personajes.*
 import estados.*
+import cosasEntorno.*
 
 
 object arriba {
@@ -9,14 +10,10 @@ object arriba {
         return "arriba"
     }
 
-    method siguiente(position, personaje) {
-        personaje.posicionDeMira(personaje.posicionArriba())
+    method siguiente(position) {
         return position.up(1)
     }
-
-    method casilleroSiguiente(position) {
-        return position.up(1)
-    }
+    
     method validarNuevaPosicion(personaje, nuevaPosicion, objetos) {
         if(self.sonAtravesables(objetos)) {
             personaje.position(nuevaPosicion)
@@ -34,12 +31,7 @@ object abajo {
         return "abajo"
     }
 
-    method siguiente(position, personaje) {
-        personaje.posicionDeMira(personaje.posicionAbajo())
-        return position.down(1)
-    }
-
-    method casilleroSiguiente(position) {
+    method siguiente(position) {
         return position.down(1)
     }
 
@@ -60,12 +52,7 @@ object derecha {
         return "derecha"
     }
 
-    method siguiente(position, personaje) {
-        personaje.posicionDeMira(personaje.posicionDerecha())
-        return position.right(1)
-    }
-
-    method casilleroSiguiente(position) {
+    method siguiente(position) {
         return position.right(1)
     }
 
@@ -88,12 +75,7 @@ object izquierda {
         return "izquierda"
     }
 
-    method siguiente(position, personaje) {
-        personaje.posicionDeMira(personaje.posicionIzquierda())
-        return position.left(1)
-    }
-
-    method casilleroSiguiente(position) {
+    method siguiente(position) {
         return position.left(1)
     }
 
