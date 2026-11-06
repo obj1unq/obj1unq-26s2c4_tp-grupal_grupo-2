@@ -38,6 +38,16 @@ class Energia inherits Imagen{
     method remover(){
         game.removeVisual(self)
     }
+
+    method aumentar(personaje) {
+    if (personaje.puedeAumentar()) {
+        const espacioDisponible = personaje.restaDeSalud()
+        const energiaAplicada = (self.energia()).min(espacioDisponible)
+
+        personaje.sumarVida(energiaAplicada)
+        self.remover()
+        }
+    }
 }
 
 class Manzana inherits Energia {
