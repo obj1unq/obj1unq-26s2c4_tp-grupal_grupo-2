@@ -78,12 +78,11 @@ class Generador {
 class GeneradorManzana inherits Generador{
     var property contador = 0
     const capacidad
-    const posicionesPosibles = #{nivel.posicionesPosiblesAbajo(), nivel.posicionesPosiblesArriba(), nivel.posicionesPosiblesDerecha(), nivel.posicionesPosiblesIzquierda()}
+    
     override method generar(cantidad, personaje){
-        var posiciones = posicionesPosibles.anyOne()
+        var posicion = pv.posicionRandom()
         if (self.contador() < capacidad){
-            var positionRandom = posiciones.anyOne()
-            const manzana = new Manzana(image = "manzana.png", position = positionRandom)
+            const manzana = new Manzana(image = "manzana.png", position = posicion)
             contador += 1
             game.addVisual(manzana)
         }

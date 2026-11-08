@@ -3,6 +3,7 @@ import inicializador.*
 import menu.*
 
 program juego {
+  inicializador.preparar()
   menu.mostrar()
   game.start()
 }

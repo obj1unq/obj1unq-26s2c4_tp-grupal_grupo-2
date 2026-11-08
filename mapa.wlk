@@ -4,23 +4,19 @@ import direcciones.*
 import vida.*
 
 object nivel{
-    const property posicionesPosiblesIzquierda = #{game.at(1,2), game.at(1,3), game.at(1,4), game.at(1,5), game.at(1,6), game.at(1,7), game.at(1,8), game.at(1,9)}
-    const property posicionesPosiblesAbajo     = #{game.at(2,2), game.at(3,2), game.at(4,2), game.at(5,2), game.at(6,2), game.at(7,2), game.at(8,2), game.at(9,2), game.at(11,2), game.at(12,2)}
-    const property posicionesPosiblesDerecha   = #{game.at(11,9), game.at(10,9), game.at(9,9), game.at(8,9), game.at(7,9), game.at(6,9), game.at(5,9), game.at(4,9), game.at(3,9)}
-    const property posicionesPosiblesArriba    = #{game.at(13,3),game.at(13,4),game.at(13,5),game.at(13,6),game.at(13,7),game.at(13,8),game.at(13,9)}
-    const jugador = guerrero
+    
     const mapa = [//0,1,2,3,4,5,6,7,8,9 
-                   [a,a,a,a,a,a,a,a,a,a,a,a,a,a,a],
-                   [a,_,_,_,_,_,_,_,_,_,_,_,_,_,a],
-                   [a,_,p2,_,_,p3,_,_,_,a,_,_,p1,_,a],
-                   [a,_,_,_,_,_,_,p2,_,_,_, _,_,_,a],
-                   [a,_,p3,_,_,g,_,_,_,_,_,a,_,_,a],
-                   [a,_,_,_,_,_,a,_,_,_,_,_,_,_,a],
-                   [a,_,_,_,_,_,_,_,_,a,_,_,p2,_,a],
-                   [a,_,p1,_,_,_,_,p1,_,_,a,_,_,_,a],
-                   [a,_,_,_,_,_,_,_,_,_,_,_,_,_,a],
-                   [a,a,a,a,a,a,a,a,a,a,a,a,a,a,a],
-                   [l,c,c,c,c,c,c,_,_,_,_,i1,i2,i3,i4]
+                   [aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa],
+                   [aa,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,aa],
+                   [aa,pv,p2,__,__,p3,__,__,__,aa,__,__,p1,pv,aa],
+                   [aa,pv,__,__,__,__,__,p2,__,__,__,__,__,pv,aa],
+                   [aa,pv,p3,__,__,gg,__,__,__,__,__,aa,__,pv,aa],
+                   [aa,pv,__,__,__,__,aa,__,__,__,__,__,__,pv,aa],
+                   [aa,pv,__,__,__,__,__,__,__,aa,__,__,p2,pv,aa],
+                   [aa,pv,p1,__,__,__,__,p1,__,__,aa,__,__,pv,aa],
+                   [aa,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,aa],
+                   [aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa],
+                   [ll,cc,cc,cc,cc,cc,cc,__,__,__,__,i1,i2,i3,i4]
                 ].reverse()
 
     //    const fila = [p,m,_,_,_,_,m]
@@ -28,7 +24,7 @@ object nivel{
 
     method dibujarMapa(){
         (0..self.alto()-1).forEach({ y => self.dibujarFila(mapa.get(y), y)})
-        g.redibujar()
+        gg.redibujar()
     }
 
     method ancho(){
@@ -58,19 +54,24 @@ object nivel{
 
 
 
-object a{
+object aa{
+
     method poner(position){
         game.addVisual(new Pino(image = "pino.png", position = position))
     }
+
 }
 
-object _{
+object __{
+
     method poner(position){
 
     }
+    
 }
 
-object g {
+object gg {
+
     method poner(position){
         guerrero.position(position)
         game.addVisual(guerrero)
@@ -79,33 +80,43 @@ object g {
     method redibujar(){
         guerrero.redibujar()
     }
+    
 }
 
 object p1{
+
     method poner(position){
         game.addVisual(new Piedra(image = "roca1_1.png", position = position))
     }
+    
 }
 
 object p2{
+
     method poner(position){
         game.addVisual(new Piedra(image = "roca1_2.png", position = position))
     }
+    
 }
 
 object p3{
+
     method poner(position){
         game.addVisual(new Piedra(image = "roca1_3.png", position = position))
     }
+    
 }
 
-object l {
+object ll {
+
     method poner(position){
         game.addVisual(new Logo(image = "personaje.png", position = position))
     }
+    
 }
 
-object c {
+object cc {
+
     var indice = 0
     var proximaPosicion = 7
 
@@ -124,14 +135,29 @@ object c {
         indice = 0
         proximaPosicion = 7
     }
+    
 }
 
 object m {
+
     method poner(position){
         game.addVisual(new Manzana(image = "manzana.png", position = position))
     }
+    
 }
 
+object pv{
 
+    const posiciones = #{}
 
+    method poner(position){
+        posiciones.add(position)
+    }
 
+    method posiciones(){
+        return posiciones
+    }
+    method posicionRandom(){
+        return posiciones.anyOne()
+    }
+}

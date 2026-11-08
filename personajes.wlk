@@ -181,8 +181,8 @@ class Guerrero inherits Personaje {
     nivel = nuevoNivel
     maxSaludDeNivel += 2
     vida = maxSaludDeNivel
-    c.agregarCorazon()
-    c.agregarCorazon()
+    cc.agregarCorazon()
+    cc.agregarCorazon()
   }
 
   method redibujar() {
@@ -250,18 +250,13 @@ class GeneradorGoblins inherits Generador {
   var property goblins = #{}
   var property cantidadMuertes = 0
   var property capacidad
-  const posicionesPosibles = #{
-      nivel.posicionesPosiblesAbajo(),
-      nivel.posicionesPosiblesArriba(),
-      nivel.posicionesPosiblesDerecha(),
-      nivel.posicionesPosiblesIzquierda()
-  }
+
   override method generar(cantidad, personaje) {
       if (cantidadMuertes < capacidad) {
-          var posiciones = posicionesPosibles.anyOne()
+          var posicion = pv.posicionRandom()
           const estadosGoblin = new EstadoGoblin()
           
-          const nuevoGoblin = new Goblin(estados = estadosGoblin, estado = estadosGoblin.normal(), position = posiciones.anyOne(), personaje = "goblin", nivel = nivelGoblin)
+          const nuevoGoblin = new Goblin(estados = estadosGoblin, estado = estadosGoblin.normal(), position = posicion, personaje = "goblin", nivel = nivelGoblin)
           goblins.add(nuevoGoblin)
           game.addVisual(nuevoGoblin)
       }

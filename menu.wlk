@@ -111,7 +111,7 @@ class Control inherits Pantalla {
 class Juego inherits Pantalla {
 
   override method mostrar() {
-    inicializador.preparar()
+    //sacamos inicializador.preparar()
     inicializador.iniciarTicks()
     menu.iniciarDeteccionGameOver()
   }
