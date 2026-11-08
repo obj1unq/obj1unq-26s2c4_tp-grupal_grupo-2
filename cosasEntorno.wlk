@@ -100,7 +100,12 @@ class CasilleroInventario {
     var estaOcupado       = false
     var posicion          = null
 
-    method poner(position){
+    method crearVisual(position){
+        posicion = position
+        return new Inventario(image = "inv.png", position = position)
+    }
+
+    method poner(position) {
         game.addVisual(new Inventario(image = "inv.png", position = position))
         posicion = position
     }

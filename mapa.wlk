@@ -9,6 +9,9 @@ object nivel{
     const property posicionesPosiblesDerecha   = #{game.at(11,9), game.at(10,9), game.at(9,9), game.at(8,9), game.at(7,9), game.at(6,9), game.at(5,9), game.at(4,9), game.at(3,9)}
     const property posicionesPosiblesArriba    = #{game.at(13,3),game.at(13,4),game.at(13,5),game.at(13,6),game.at(13,7),game.at(13,8),game.at(13,9)}
     const jugador = guerrero
+    
+    var property visuals = []
+
     const mapa = [//0,1,2,3,4,5,6,7,8,9 
                    [a,a,a,a,a,a,a,a,a,a,a,a,a,a,a],
                    [a,_,_,_,_,_,_,_,_,_,_,_,_,_,a],
@@ -26,9 +29,30 @@ object nivel{
     //    const fila = [p,m,_,_,_,_,m]
 
 
-    method dibujarMapa(){
-        (0..self.alto()-1).forEach({ y => self.dibujarFila(mapa.get(y), y)})
-        g.redibujar()
+    method construirVisuals() {
+        visuals = []
+
+        (0..self.alto()-1).forEach({ y =>
+        self.construirFila(mapa.get(y), y)
+        })
+    }
+
+    method construirFila(fila, y) {
+        (0..self.ancho()-1).forEach({ x =>
+        const visual = fila.get(x).crearVisual(game.at(x, y))
+    
+        if (visual != null) {
+          visuals.add(visual)
+        }
+        })
+    }
+    
+    method dibujarMapa() {
+      visuals.forEach({ visual =>
+        game.addVisual(visual)
+      })
+    
+      g.redibujar()
     }
 
     method ancho(){
@@ -59,21 +83,21 @@ object nivel{
 
 
 object a{
-    method poner(position){
-        game.addVisual(new Pino(image = "pino.png", position = position))
+    method crearVisual(position){
+        return new Pino (image = "pino.png", position = position)
     }
 }
 
 object _{
-    method poner(position){
-
+    method crearVisual(position){
+        return null
     }
 }
 
 object g {
-    method poner(position){
+    method crearVisual(position){
         guerrero.position(position)
-        game.addVisual(guerrero)
+        return null
     }
 
     method redibujar(){
@@ -82,26 +106,26 @@ object g {
 }
 
 object p1{
-    method poner(position){
-        game.addVisual(new Piedra(image = "roca1_1.png", position = position))
+    method crearVisual(position){
+        return new Piedra(image = "roca1_1.png", position = position)
     }
 }
 
 object p2{
-    method poner(position){
-        game.addVisual(new Piedra(image = "roca1_2.png", position = position))
+    method crearVisual(position){
+        return new Piedra(image = "roca1_2.png", position = position)
     }
 }
 
 object p3{
-    method poner(position){
-        game.addVisual(new Piedra(image = "roca1_3.png", position = position))
+    method crearVisual(position){
+        return new Piedra(image = "roca1_3.png", position = position)
     }
 }
 
 object l {
-    method poner(position){
-        game.addVisual(new Logo(image = "personaje.png", position = position))
+    method crearVisual(position){
+        return new Logo(image = "personaje.png", position = position)
     }
 }
 
@@ -109,20 +133,31 @@ object c {
     var indice = 0
     var proximaPosicion = 7
 
-    method poner(position) {
-        indice += 1
-        game.addVisual(new Corazon(position = position, indice = indice))
+    method crearVisual(position) {
+      indice += 1
+
+      return new Corazon(
+      position = position,
+      indice = indice
+      )
     }
 
     method agregarCorazon() {
-        indice += 1
-        game.addVisual(new Corazon(position = game.at(proximaPosicion, 0), indice = indice))
-        proximaPosicion += 1
+      indice += 1
+
+      game.addVisual(
+        new Corazon(
+        position = game.at(proximaPosicion, 0),
+        indice = indice
+      )
+      )
+
+      proximaPosicion += 1
     }
 
     method reiniciar() {
-        indice = 0
-        proximaPosicion = 7
+      indice = 0
+      proximaPosicion = 7
     }
 }
 

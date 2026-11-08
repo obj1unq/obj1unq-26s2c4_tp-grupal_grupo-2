@@ -62,6 +62,7 @@ object inicializador {
     }
 
     method preparar() {
+        nivel.construirVisuals()
         nivel.dibujarMapa()
 
         keyboard.e().onPressDo({ guerrero.interactuar() })
