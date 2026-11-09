@@ -119,6 +119,7 @@ class CasilleroInventario {
         self.poner(posicion)
         estaOcupado = false
     }
+    
 }
 
 var i1 = new CasilleroInventario()

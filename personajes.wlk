@@ -45,6 +45,14 @@ class Personaje {
     return estados.muerte()
   }
 
+  method mover(direccion){
+    if (estado.puedeMover()) {
+      self.cambiarDireccion(direccion)
+      const nuevaPosicion = direccion.siguiente(self.position())
+      const objetos = game.getObjectsIn(nuevaPosicion)
+      direccion.validarNuevaPosicion(self, nuevaPosicion, objetos)
+    }
+  }
 
   method image() {
     return estado.image(personaje, nivel, direccionActual.nombre())
@@ -62,14 +70,10 @@ class Personaje {
   }
 
   method validarMuerte(){
-    self.muerte().muerte(self)
-}
-
-  method puedePerderEnergia(){
-    return vida > 0
+    if(self.estaMuerto()){
+      self.accionar(self.muerte(), nivel)
+    }
   }
-
-  
 
   
 
@@ -89,17 +93,19 @@ class Personaje {
   }
 
   method atacar() {
-    self.ataque().atacar(self)
-  }
-
-  method mover(direccion) {
-    estado.mover(direccion, self)
+    if (estado.puedeAtacar()) {
+        self.accionar(self.ataque(), nivel)
+    }
   }
 
   method recibirDanio() {
-    self.danio().recibirDanio(self)
+    self.accionar(self.danio(), nivel)
   }
 
+  method accionar(_estado, nivelPersonaje){
+    self.cambiarEstado(_estado)
+    estado.ejecutar(self, nivelPersonaje)
+  }
 
 }
 
@@ -126,7 +132,7 @@ class Guerrero inherits Personaje {
         enemigo.recibirDanio()
         nivel.perderEnergia(enemigo)
     }
-}
+  }
 
   method validarEnemigo() {
     const casilleroAtaque = direccionActual.siguiente(position)
@@ -166,7 +172,9 @@ class Guerrero inherits Personaje {
 
 
   method transformar() {
-    self.transformacion().transformar(self, nivel)
+    if(self.sePuedeTransformar()){
+      self.accionar(self.transformacion(), nivel)
+    }
   }
 
   method craftear(){
@@ -181,8 +189,8 @@ class Guerrero inherits Personaje {
     nivel = nuevoNivel
     maxSaludDeNivel += 2
     vida = maxSaludDeNivel
-    c.agregarCorazon()
-    c.agregarCorazon()
+    cc.agregarCorazon()
+    cc.agregarCorazon()
   }
 
   method redibujar() {
@@ -195,14 +203,17 @@ class Goblin inherits Personaje {
   const enemigo = guerrero
 
   override method mover(direccion) {
-      super(direccion)
-      self.atacarGuerrero()
+    super(direccion)
+    self.atacarGuerrero()
   }
 
   method atacarGuerrero() {
     const casilleroAtaque = direccionActual.siguiente(position)
+    self.atacarEnemigo(casilleroAtaque)
+  }
 
-    if (enemigo.position() == casilleroAtaque) {
+  method atacarEnemigo(casillero){
+    if (enemigo.position() == casillero) {
         self.atacar()
     }
   }
@@ -213,36 +224,11 @@ class Goblin inherits Personaje {
   }
 
   method perseguirGuerrero() {
-      self.perseguirDerecha()
-      self.perseguirIzquierda()
-      self.perseguirArriba()
-      self.perseguirAbajo()
+    derecha.perseguirEnemigo(self, enemigo)
+    izquierda.perseguirEnemigo(self, enemigo)
+    arriba.perseguirEnemigo(self, enemigo)
+    abajo.perseguirEnemigo(self, enemigo)
   }
-
-  method perseguirDerecha() {
-      if (position.x() < guerrero.position().x()) {
-          self.mover(derecha)
-      }
-  }
-
-  method perseguirIzquierda() {
-      if (position.x() > guerrero.position().x()) {
-          self.mover(izquierda)
-      }
-  }
-
-  method perseguirArriba() {
-      if (position.y() < guerrero.position().y()) {
-          self.mover(arriba)
-      }
-  }
-
-  method perseguirAbajo() {
-      if (position.y() > guerrero.position().y()) {
-          self.mover(abajo)
-      }
-  }
-
 }
 
 
@@ -250,18 +236,13 @@ class GeneradorGoblins inherits Generador {
   var property goblins = #{}
   var property cantidadMuertes = 0
   var property capacidad
-  const posicionesPosibles = #{
-      nivel.posicionesPosiblesAbajo(),
-      nivel.posicionesPosiblesArriba(),
-      nivel.posicionesPosiblesDerecha(),
-      nivel.posicionesPosiblesIzquierda()
-  }
+
   override method generar(cantidad, personaje) {
       if (cantidadMuertes < capacidad) {
-          var posiciones = posicionesPosibles.anyOne()
+          var posicion = pv.posicionRandom()
           const estadosGoblin = new EstadoGoblin()
           
-          const nuevoGoblin = new Goblin(estados = estadosGoblin, estado = estadosGoblin.normal(), position = posiciones.anyOne(), personaje = "goblin", nivel = nivelGoblin)
+          const nuevoGoblin = new Goblin(estados = estadosGoblin, estado = estadosGoblin.normal(), position = posicion, personaje = "goblin", nivel = nivelGoblin)
           goblins.add(nuevoGoblin)
           game.addVisual(nuevoGoblin)
       }

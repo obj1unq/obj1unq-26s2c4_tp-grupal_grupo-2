@@ -5,7 +5,6 @@ import cosasEntorno.*
 
 
 object arriba {
-
     method nombre() {
         return "arriba"
     }
@@ -21,7 +20,13 @@ object arriba {
     }
     method sonAtravesables(objetos){
         return objetos.all({ objeto => objeto.esAtravesable() })
-  }
+    }
+    method perseguirEnemigo(personaje, enemigo){
+        if (personaje.position().y() < enemigo.position().y()) {
+            personaje.mover(self)
+        }
+    }
+
 }
 
 
@@ -42,7 +47,12 @@ object abajo {
     }
     method sonAtravesables(objetos){
         return objetos.all({ objeto => objeto.esAtravesable() })
-  }
+    }
+    method perseguirEnemigo(personaje, enemigo){
+        if (personaje.position().y() > enemigo.position().y()) {
+            personaje.mover(self)
+        }
+    }
 }
 
 
@@ -66,6 +76,11 @@ object derecha {
         return objetos.all({ objeto => objeto.esAtravesable() })
     
     }
+    method perseguirEnemigo(personaje, enemigo){
+        if (personaje.position().x() < enemigo.position().x()) {
+            personaje.mover(self)
+        }
+    }
 }
 
 
@@ -86,5 +101,10 @@ object izquierda {
     }
     method sonAtravesables(objetos){
         return objetos.all({ objeto => objeto.esAtravesable() })
-  }
+    }
+    method perseguirEnemigo(personaje, enemigo){
+        if (personaje.position().x() > enemigo.position().x()) {
+            personaje.mover(self)
+        }
+    }
 }
