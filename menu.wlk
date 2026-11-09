@@ -36,7 +36,6 @@ class Pantalla {
 
   method detectarMuerte()
 
-  method reintentar()
 }
 
 
@@ -70,7 +69,6 @@ class MenuPrincipal inherits Pantalla {
 
   override method detectarMuerte() {}
 
-  override method reintentar() {}
 }
 
 
@@ -100,7 +98,6 @@ class Control inherits Pantalla {
 
   override method detectarMuerte() {}
 
-  override method reintentar() {}
 }
 
 
@@ -111,7 +108,6 @@ class Control inherits Pantalla {
 class Juego inherits Pantalla {
 
   override method mostrar() {
-    //sacamos inicializador.preparar()
     inicializador.iniciarTicks()
     menu.iniciarDeteccionGameOver()
   }
@@ -133,7 +129,6 @@ class Juego inherits Pantalla {
     }
   }
 
-  override method reintentar() {}
 }
 
 
@@ -161,7 +156,6 @@ class GameOver inherits Pantalla {
 
   override method detectarMuerte() {}
 
-  override method reintentar() {}
 }
 
 
@@ -197,7 +191,6 @@ object menu {
     keyboard.enter().onPressDo({ self.confirmar() })
     keyboard.c().onPressDo({ self.abrirControles() })
     keyboard.m().onPressDo({ self.volver() })
-    //keyboard.r().onPressDo({ self.reintentar() })
   }
 
   method cambiarPantalla(nuevaPantalla) {
@@ -229,8 +222,4 @@ object menu {
   method detenerDeteccionGameOver() {
     detectarGameOver.stop()
   }
-
-  //method reintentar() {
-  //  pantallaActual.reintentar()
-  //}
 }

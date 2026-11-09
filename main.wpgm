@@ -1,6 +1,7 @@
 import wollok.game.*
 import inicializador.*
 import menu.*
+import mapa.*
 
 program juego {
   inicializador.preparar()

@@ -48,21 +48,7 @@ class Estado {
         personaje.cambiarEstado(personaje.normal())
     }
 
-    method mover(direccion, personaje){}
-
-    method transformacion(personaje, nivel){}
-
-    method subirNivel(personaje, nivel){}
-
-    method recibirDanio(personaje){}
-
-    method muerte(personaje) {
-        if(personaje.estaMuerto()) {
-            personaje.cambiarEstado(personaje.muerte())
-        }
-    }
-
-    method atacar(personaje){}
+    method ejecutar(personaje, nivel){}
 
 }
 
@@ -80,16 +66,8 @@ class Normal inherits Estado {
 
     override method finalizarAnimacion(personaje) {}
 
-    override method mover(direccion, personaje){
-        if (self.puedeMover()) {
-            personaje.cambiarDireccion(direccion)
+    
 
-            const nuevaPosicion = direccion.siguiente(personaje.position())
-            const objetos = game.getObjectsIn(nuevaPosicion)
-
-            direccion.validarNuevaPosicion(personaje, nuevaPosicion, objetos)
-        }
-    }
 }
 
 
@@ -97,21 +75,16 @@ class Normal inherits Estado {
 
 class Ataque inherits Estado {
 
-    override method atacar(personaje) {
-        if (personaje.estado().puedeAtacar()) {
-            personaje.cambiarEstado(self)
-            personaje.ejecutarAtaque()
-        }
+    override method ejecutar(personaje, nivel){
+        personaje.ejecutarAtaque()
     }
 }
 
 
 class Danio inherits Estado {
 
-    override method recibirDanio(personaje) {
-        if (personaje.puedePerderEnergia()) {
-            personaje.cambiarEstado(self)
-        }
+    override method ejecutar(personaje, nivel){
+        
     }
 }
 
@@ -121,11 +94,16 @@ class MuerteGoblin inherits Estado {
         game.removeVisual(personaje)
         generadorGoblins.eliminar(personaje)
     }
+    override method ejecutar(personaje, nivel){}
 }
 
 
 class MuerteGuerrero inherits Estado {
     override method finalizarAnimacion(personaje) {}
+
+    override method ejecutar(personaje, nivel){
+
+    }
 }
 
 
@@ -134,20 +112,16 @@ class Transformacion inherits Estado {
         return personaje + "_" + self.nombre() + "_" + frameActual + ".png"
     }
 
-    method transformar(personaje, nivel) {
-        if (personaje.sePuedeTransformar()) {
-            personaje.cambiarEstado(self)
-            self.subirNivel(personaje, nivel)
-            personaje.craftear()
-            inventarios.desocuparTodos()
-        }
+    override method ejecutar(personaje, nivel){
+        self.subirNivel(personaje, nivel)
+        personaje.craftear()
+        inventarios.desocuparTodos()
     }
 
-    override method subirNivel(personaje, nivelActual){
+    method subirNivel(personaje, nivelActual){
         var nuevoNivel = new Nivel(nivel = nivelActual.nivel() + 1, danio = nivelActual.danio() + 1)
         personaje.subirNivel(nuevoNivel)
     }
-    
 }
 
 
