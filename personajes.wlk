@@ -253,6 +253,14 @@ class GeneradorGoblins inherits Generador {
       generadorCrafteo.generar(cantidadMuertes, goblin)
       goblins.remove(goblin)
   }
+
+  method puedeAvanzarNivel() {
+      return cantidadMuertes >= capacidad
+  }
+
+  override method reiniciar() {
+      cantidadMuertes = 0
+  }
 }
 
 var generadorGoblins = new GeneradorGoblins(capacidad = 20)

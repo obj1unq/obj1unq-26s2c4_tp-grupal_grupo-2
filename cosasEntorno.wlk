@@ -119,7 +119,11 @@ class CasilleroInventario {
         self.poner(posicion)
         estaOcupado = false
     }
-    
+
+    method crearVisual(position) {
+        posicion = position
+        return new Inventario(image = "inv.png", position = position)
+    }
 }
 
 var i1 = new CasilleroInventario()
