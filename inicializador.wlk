@@ -4,6 +4,8 @@ import personajes.*
 import direcciones.*
 import mapa.*
 import cosasEntorno.*
+import administradorNiveles.*
+
 
 object inicializador {
 
@@ -62,7 +64,12 @@ object inicializador {
     }
 
     method preparar() {
-        nivel.dibujarMapa()
+        administradorNiveles.nivelActual().dibujarMapa()
+
+        inventarios.agregarElementoCraft(espada, guerrero)
+        inventarios.agregarElementoCraft(collar, guerrero)
+        inventarios.agregarElementoCraft(botas, guerrero)
+        inventarios.agregarElementoCraft(lingote, guerrero)
 
         keyboard.e().onPressDo({ guerrero.interactuar() })
         keyboard.t().onPressDo({ guerrero.transformar() })

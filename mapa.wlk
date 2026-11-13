@@ -3,27 +3,12 @@ import cosasEntorno.*
 import direcciones.*
 import vida.*
 
-
-object nivel {
-    const mapa = [
-        [aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa],
-        [aa,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,aa],
-        [aa,pv,p2,__,__,p3,__,__,__,aa,__,__,p1,pv,aa],
-        [aa,pv,__,__,__,__,__,p2,__,__,__,__,__,pv,aa],
-        [aa,pv,p3,__,__,gg,__,__,__,__,__,aa,__,pv,aa],
-        [aa,pv,__,__,aa,__,__,__,__,__,__,__,__,pv,aa],
-        [aa,pv,__,__,__,__,__,__,__,aa,__,__,p2,pv,aa],
-        [aa,pv,p1,__,__,__,__,p1,__,__,aa,__,__,pv,aa],
-        [aa,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,aa],
-        [aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa],
-        [ll,cc,cc,cc,cc,cc,cc,__,__,__,__,i1,i2,i3,i4]
-    ].reverse()
-
+class Nivel {
+    const property mapa
     var visuals = []
 
     method construirVisuals() {
         visuals = []
-        cc.reiniciar()
         pv.reiniciar()
 
         (0..self.alto()-1).forEach({ y =>
@@ -44,7 +29,9 @@ object nivel {
     method dibujarMapa() {
         self.construirVisuals()
 
-        visuals.forEach({ visual => game.addVisual(visual) })
+        visuals.forEach({ visual =>
+            game.addVisual(visual)
+        })
 
         gg.redibujar()
     }
@@ -56,16 +43,30 @@ object nivel {
     method alto() {
         return mapa.size()
     }
-
-    method configurarTablero() {
-        game.title("Juego")
-        game.height(self.alto())
-        game.width(self.ancho())
-        game.cellSize(50)
-        game.boardGround("fondo1.jpg")
-    }
 }
 
+
+const nivel1 = new Nivel(
+    mapa = [
+        [aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa],
+        [aa,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,aa],
+        [aa,pv,p2,__,__,p3,__,__,__,aa,__,__,p1,pv,aa],
+        [aa,pv,__,__,__,__,__,p2,__,__,__,__,__,pv,aa],
+        [aa,pv,p3,__,__,gg,__,__,__,__,__,aa,__,pv,aa],
+        [aa,pv,__,__,aa,__,__,__,__,__,__,__,__,pv,aa],
+        [aa,pv,__,__,__,__,__,__,__,aa,__,__,p2,pv,aa],
+        [aa,pv,p1,__,__,__,__,p1,__,__,aa,__,__,pv,aa],
+        [aa,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,aa],
+        [aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa],
+        [ll,cc,cc,cc,cc,cc,cc,__,__,__,__,i1,i2,i3,i4]
+    ].reverse()
+)
+
+//const nivel2 = new Nivel(
+//    mapa = [
+//        // Acá va la matriz del segundo mapa
+//    ].reverse()
+//)
 
 object aa {
     method crearVisual(position) {
