@@ -68,7 +68,7 @@ class Personaje {
   }
 
   method estaMuerto(){
-    return vida == 0
+    return vida <= 0
   }
 
   method validarMuerte(){

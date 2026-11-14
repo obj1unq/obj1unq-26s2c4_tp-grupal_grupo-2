@@ -81,7 +81,7 @@ const nivel2 = new Nivel(
         [at,pv,p4,__,__,__,pv,__,__,pv,p6,__,__,pv,at],
         [at,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,at],
         [at,at,at,at,at,at,at,at,at,at,at,at,at,at,at],
-        [ll,cc,cc,cc,cc,cc,cc,__,__,__,__,i1,i2,i3,i4]
+        [ll,cc,cc,cc,cc,cc,cc,cc,cc,__,__,i1,i2,i3,i4]
     ].reverse()
 )
 
