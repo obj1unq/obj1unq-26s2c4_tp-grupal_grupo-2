@@ -94,7 +94,7 @@ class GeneradorManzana inherits Generador{
 }
 
 class GeneradorPocion inherits Generador {
-    var aparicion = 9
+    var aparicion = 3
 
     const pociones = [fabricaPocionChica, fabricaPocionGrande]
 
@@ -107,11 +107,11 @@ class GeneradorPocion inherits Generador {
     }
 
     override method reiniciar() {
-        aparicion = 9
+        aparicion = 3
     }
 }
 
-var generadorDeManzanas = new GeneradorManzana(capacidad = 3)
+var generadorDeManzanas = new GeneradorManzana(capacidad = 5)
 var generadorDePociones = new GeneradorPocion()
 
 object fabricaPocionChica {

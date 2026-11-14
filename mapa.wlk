@@ -10,6 +10,7 @@ class Nivel {
     method construirVisuals() {
         visuals = []
         pv.reiniciar()
+        cc.reiniciar()
 
         (0..self.alto()-1).forEach({ y =>
             self.construirFila(mapa.get(y), y)
@@ -43,6 +44,12 @@ class Nivel {
     method alto() {
         return mapa.size()
     }
+
+    method borrarMapa() {
+        visuals.forEach({ visual =>
+            game.removeVisual(visual)
+    })
+    }
 }
 
 
@@ -62,11 +69,21 @@ const nivel1 = new Nivel(
     ].reverse()
 )
 
-//const nivel2 = new Nivel(
-//    mapa = [
-//        // Acá va la matriz del segundo mapa
-//    ].reverse()
-//)
+const nivel2 = new Nivel(
+    mapa = [
+        [at,at,at,at,at,at,at,at,at,at,at,at,at,at,at],
+        [at,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,at],
+        [at,pv,p4,__,__,pv,__,__,p5,pv,__,__,p6,pv,at],
+        [at,pv,__,__,pv,pv,__,pv,__,__,pv,__,__,pv,at],
+        [at,pv,p5,__,__,gg,__,p4,__,pv,__,__,p6,pv,at],
+        [at,pv,__,pv,__,__,pv,__,__,__,__,pv,__,pv,at],
+        [at,pv,__,__,p6,pv,__,__,p5,__,__,__,__,pv,at],
+        [at,pv,p4,__,__,__,pv,__,__,pv,p6,__,__,pv,at],
+        [at,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,at],
+        [at,at,at,at,at,at,at,at,at,at,at,at,at,at,at],
+        [ll,cc,cc,cc,cc,cc,cc,__,__,__,__,i1,i2,i3,i4]
+    ].reverse()
+)
 
 object aa {
     method crearVisual(position) {
@@ -87,7 +104,6 @@ object gg {
     }
 
     method redibujar() {
-        game.addVisual(guerrero)
         guerrero.redibujar()
     }
 }
@@ -107,6 +123,24 @@ object p2 {
 object p3 {
     method crearVisual(position) {
         return new Piedra(image = "roca1_3.png", position = position)
+    }
+}
+
+object p4 {
+    method crearVisual(position) {
+        return new Piedra(image = "roca3_1.png", position = position)
+    }
+}
+
+object p5 {
+    method crearVisual(position) {
+        return new Piedra(image = "roca3_2.png", position = position)
+    }
+}
+
+object p6 {
+    method crearVisual(position) {
+        return new Piedra(image = "roca3_3.png", position = position)
     }
 }
 
@@ -158,5 +192,11 @@ object pv {
 
     method reiniciar() {
         posiciones.clear()
+    }
+}
+
+object at {
+    method crearVisual(position) {
+        return new Pino(image = "pino2.png", position = position)
     }
 }

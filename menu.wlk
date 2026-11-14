@@ -17,6 +17,7 @@ const botonControles = new Menu(image = "boton_controles.png", position = game.a
 const fondoMenu = new Menu(image = "fondo_menu.png", position = game.origin())
 const pantallaControles = new Menu(image = "pantalla_controles.png", position = game.origin())
 const pantallaGameOver = new Menu(image = "pantalla_game_over.png", position = game.origin())
+const fondoNivel2 = new Menu(image = "fondo2.jpg", position = game.origin())
 
 
 // --------------------------------
@@ -177,6 +178,8 @@ object menu {
 
   var pantallaActual = menuPrincipal
 
+  var fondoNivelActual = null
+
   const detectarGameOver = game.tick(1300, { self.detectarMuerte() }, false)
 
   method mostrar() {
@@ -221,5 +224,16 @@ object menu {
 
   method detenerDeteccionGameOver() {
     detectarGameOver.stop()
+  }
+
+  method cambiarFondoNivel(numeroNivel) {
+    if (fondoNivelActual != null) {
+        game.removeVisual(fondoNivelActual)
+    }
+
+    if (numeroNivel == 2) {
+        fondoNivelActual = fondoNivel2
+        game.addVisual(fondoNivelActual)
+    }
   }
 }
