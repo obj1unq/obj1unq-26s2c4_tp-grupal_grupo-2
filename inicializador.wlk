@@ -4,6 +4,10 @@ import personajes.*
 import direcciones.*
 import mapa.*
 import cosasEntorno.*
+import administradorNiveles.*
+import menu.*
+
+
 
 object inicializador {
 
@@ -40,10 +44,35 @@ object inicializador {
     )
 
     const manzanasAleatorias = game.tick(
-        22500,
+        5000,
         { generadorDeManzanas.generar(0, guerrero) },
         false
     )
+
+    const verificarCambioNivel = game.tick(
+        500,
+        { self.verificarAvance() },
+        false
+    )
+
+    method verificarAvance() {
+        if (generadorGoblins.puedeAvanzarNivel() &&
+            administradorNiveles.haySiguienteNivel()) {
+
+            administradorNiveles.nivelActual().borrarMapa()
+
+            generadorGoblins.reiniciar()
+            generadorDeManzanas.reiniciar()
+            generadorDePociones.reiniciar()
+            generadorCrafteo.reiniciar()
+
+            administradorNiveles.avanzarNivel()
+
+            menu.cambiarFondoNivel(administradorNiveles.numeroNivelActual())
+
+            administradorNiveles.nivelActual().dibujarMapa()
+        }
+    }
 
     method iniciarTicks() {
         animacionMovimientoGuerrero.start()
@@ -51,6 +80,7 @@ object inicializador {
         movimientoGoblins.start()
         manzanasAleatorias.start()
         aparicionGoblins.start()
+        verificarCambioNivel.start()
     }
 
     method detenerTicks() {
@@ -59,10 +89,11 @@ object inicializador {
         animacionMovimientoGoblins.stop()
         movimientoGoblins.stop()
         manzanasAleatorias.stop()
+        verificarCambioNivel.stop()
     }
 
     method preparar() {
-        nivel.dibujarMapa()
+        administradorNiveles.nivelActual().dibujarMapa()
 
         keyboard.e().onPressDo({ guerrero.interactuar() })
         keyboard.t().onPressDo({ guerrero.transformar() })

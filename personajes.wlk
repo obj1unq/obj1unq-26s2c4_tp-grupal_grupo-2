@@ -4,6 +4,8 @@ import nivelPersonajes.*
 import cosasEntorno.*
 import vida.*
 import mapa.*
+import administradorNiveles.*
+
 
 
 class Personaje {
@@ -66,7 +68,7 @@ class Personaje {
   }
 
   method estaMuerto(){
-    return vida == 0
+    return vida <= 0
   }
 
   method validarMuerte(){
@@ -242,20 +244,50 @@ class GeneradorGoblins inherits Generador {
           var posicion = pv.posicionRandom()
           const estadosGoblin = new EstadoGoblin()
           
-          const nuevoGoblin = new Goblin(estados = estadosGoblin, estado = estadosGoblin.normal(), position = posicion, personaje = "goblin", nivel = nivelGoblin)
+          const nuevoGoblin = new Goblin(
+              estados = estadosGoblin,
+              estado = estadosGoblin.normal(),
+              position = posicion,
+              personaje = "goblin",
+              nivel = self.nivelDelEnemigo()
+              )
           goblins.add(nuevoGoblin)
           game.addVisual(nuevoGoblin)
       }
   }
+  
   method eliminar(goblin) {
       cantidadMuertes += 1
       generadorDePociones.generar(cantidadMuertes, goblin)
       generadorCrafteo.generar(cantidadMuertes, goblin)
       goblins.remove(goblin)
   }
+
+  method puedeAvanzarNivel() {
+      return cantidadMuertes >= capacidad &&
+        guerrero.nivel().nivel() >= 2
+  }
+
+  override method reiniciar() {
+      goblins.forEach({ goblin =>
+          game.removeVisual(goblin)
+      })
+
+      goblins.clear()
+      cantidadMuertes = 0
+  }
+
+  method nivelDelEnemigo() {
+    if (administradorNiveles.numeroNivelActual() == 1) {
+        return nivelGoblin
+    }
+    else {
+        return nivelGoblinCueva
+    }
+}
 }
 
-var generadorGoblins = new GeneradorGoblins(capacidad = 20)
+var generadorGoblins = new GeneradorGoblins(capacidad = 5)
 
 var estadosGuerrero = new EstadoGuerrero()
 

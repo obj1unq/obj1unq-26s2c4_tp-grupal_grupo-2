@@ -3,7 +3,7 @@ import inicializador.*
 import menu.*
 import mapa.*
 
-program juego {
+program OrcSlayer {
   inicializador.preparar()
   menu.mostrar()
   game.start()

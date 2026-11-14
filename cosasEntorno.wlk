@@ -53,9 +53,9 @@ class Inventario inherits Imagen {
 
 
 
-class GeneradorCraft inherits Generador{
-    var aparicion   = 1
-    const elementos = [espada, collar, botas, lingote] 
+class GeneradorCraft inherits Generador {
+    var aparicion = 1
+    var elementos = [espada, collar, botas, lingote]
 
     override method generar(cantidadDeMuertes, personaje) {
         if (aparicion == cantidadDeMuertes && not elementos.isEmpty()) {
@@ -64,8 +64,12 @@ class GeneradorCraft inherits Generador{
             const elemento = elementos.anyOne()
             elementos.remove(elemento)
             elemento.generarEn(personaje.position())
-            
         }
+    }
+
+    override method reiniciar() {
+        aparicion = 1
+        elementos = [espada, collar, botas, lingote]
     }
 }
 
@@ -119,7 +123,11 @@ class CasilleroInventario {
         self.poner(posicion)
         estaOcupado = false
     }
-    
+
+    method crearVisual(position) {
+        posicion = position
+        return new Inventario(image = "inv.png", position = position)
+    }
 }
 
 var i1 = new CasilleroInventario()
