@@ -6,6 +6,7 @@ import mapa.*
 import cosasEntorno.*
 import administradorNiveles.*
 import menu.*
+import musica.*
 
 
 
@@ -93,6 +94,7 @@ object inicializador {
     }
 
     method preparar() {
+        musicaMenu.empezarMusica()
         administradorNiveles.nivelActual().dibujarMapa()
 
         keyboard.e().onPressDo({ guerrero.interactuar() })

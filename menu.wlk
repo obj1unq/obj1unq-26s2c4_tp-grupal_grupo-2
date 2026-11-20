@@ -2,6 +2,7 @@
 import wollok.game.*
 import inicializador.*
 import personajes.*
+import musica.*
 
 // --------------------------------
 // ELEMENTOS VISUALES
@@ -109,6 +110,7 @@ class Control inherits Pantalla {
 class Juego inherits Pantalla {
 
   override method mostrar() {
+    musicaMenu.pararMusica()
     inicializador.iniciarTicks()
     menu.iniciarDeteccionGameOver()
   }
@@ -125,7 +127,7 @@ class Juego inherits Pantalla {
   override method abrirControles() {}
 
   override method detectarMuerte() {
-    if (guerrero.vida() <= 0) {
+    if (guerrero.estaMuerto()) {
       menu.cambiarPantalla(gameOver)
     }
   }
