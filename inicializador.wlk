@@ -94,7 +94,6 @@ object inicializador {
     }
 
     method preparar() {
-        musicaMenu.empezarMusica()
         administradorNiveles.nivelActual().dibujarMapa()
 
         keyboard.e().onPressDo({ guerrero.interactuar() })

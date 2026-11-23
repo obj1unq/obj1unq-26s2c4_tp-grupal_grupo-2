@@ -13,12 +13,12 @@ class Menu {
   var property position
 }
 
-const botonStart = new Menu(image = "boton_start.png", position = game.at(5, 5))
-const botonControles = new Menu(image = "boton_controles.png", position = game.at(5, 3))
-const fondoMenu = new Menu(image = "fondo_menu.png", position = game.origin())
+const botonStart        = new Menu(image = "boton_start.png", position = game.at(5, 5))
+const botonControles    = new Menu(image = "boton_controles.png", position = game.at(5, 3))
+const fondoMenu         = new Menu(image = "fondo_menu.png", position = game.origin())
 const pantallaControles = new Menu(image = "pantalla_controles.png", position = game.origin())
-const pantallaGameOver = new Menu(image = "pantalla_game_over.png", position = game.origin())
-const fondoNivel2 = new Menu(image = "fondo2.jpg", position = game.origin())
+const pantallaGameOver  = new Menu(image = "pantalla_game_over.png", position = game.origin())
+const fondoNivel2       = new Menu(image = "fondo2.jpg", position = game.origin())
 
 
 // --------------------------------
@@ -38,6 +38,59 @@ class Pantalla {
 
   method detectarMuerte()
 
+}
+// --------------------------------
+// SECUENCIA DE IMAGENES
+// --------------------------------
+
+
+
+class SecuenciaImagen inherits Pantalla {
+
+  var imagenInicial = 1
+  var cantImagenes
+  var imagenActual = null
+
+  override method mostrar() {
+    musicaMenu.pararMusica()
+    musicaImagen1.empezarMusica()
+    self.mostrarImagen()
+  }
+
+  method mostrarImagen() {
+    if (imagenActual != null) {
+      game.removeVisual(imagenActual)
+    }
+
+    var nombreImagen = "imagen_1_" + imagenInicial + ".png"
+
+    imagenActual = new Menu(image = nombreImagen, position = game.origin())
+
+    game.addVisual(imagenActual)
+  }
+
+  override method confirmar() {
+    if (imagenInicial < cantImagenes) {
+      imagenInicial += 1
+      self.mostrarImagen()
+    }
+    else {
+      imagenInicial = 1
+      musicaImagen1.pararMusica()
+      menu.cambiarPantalla(juego)
+    }
+  }
+
+  override method ocultar() {
+    if (imagenActual != null) {
+      game.removeVisual(imagenActual)
+      imagenActual = null
+    }
+  }
+
+  override method volver() {}
+  override method abrirControles() {}
+  override method detectarMuerte() {}
 }
 
 
@@ -60,7 +113,7 @@ class MenuPrincipal inherits Pantalla {
   }
 
   override method confirmar() {
-    menu.cambiarPantalla(juego)
+    menu.cambiarPantalla(imagenes1)
   }
 
   override method abrirControles() {
@@ -110,7 +163,7 @@ class Control inherits Pantalla {
 class Juego inherits Pantalla {
 
   override method mostrar() {
-    musicaMenu.pararMusica()
+    inicializador.preparar()
     inicializador.iniciarTicks()
     menu.iniciarDeteccionGameOver()
   }
@@ -170,6 +223,7 @@ const menuPrincipal = new MenuPrincipal()
 const controles     = new Control()
 const juego         = new Juego()
 const gameOver      = new GameOver()
+const imagenes1     = new SecuenciaImagen(cantImagenes = 13)
 
 
 // --------------------------------
@@ -189,7 +243,9 @@ object menu {
     game.height(11)
     game.cellSize(50)
     game.title("Orc Slayer")
-    game.boardGround("fondo1.jpg")
+
+
+    musicaMenu.empezarMusica()
 
     pantallaActual.mostrar()
 
