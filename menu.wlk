@@ -3,6 +3,7 @@ import wollok.game.*
 import inicializador.*
 import personajes.*
 import musica.*
+import administradorNiveles.*
 
 // --------------------------------
 // ELEMENTOS VISUALES
@@ -18,7 +19,6 @@ const botonControles    = new Menu(image = "boton_controles.png", position = gam
 const fondoMenu         = new Menu(image = "fondo_menu.png", position = game.origin())
 const pantallaControles = new Menu(image = "pantalla_controles.png", position = game.origin())
 const pantallaGameOver  = new Menu(image = "pantalla_game_over.png", position = game.origin())
-const fondoNivel2       = new Menu(image = "fondo2.jpg", position = game.origin())
 
 
 // --------------------------------
@@ -205,8 +205,9 @@ class GameOver inherits Pantalla {
   override method confirmar() {}
 
   override method volver() {
+    administradorNiveles.reiniciar()
     menu.cambiarPantalla(menuPrincipal)
-  }
+}
 
   override method abrirControles() {}
 
@@ -233,9 +234,6 @@ const imagenes1     = new SecuenciaImagen(cantImagenes = 13)
 object menu {
 
   var pantallaActual = menuPrincipal
-
-  var fondoNivelActual = null
-
   const detectarGameOver = game.tick(1300, { self.detectarMuerte() }, false)
 
   method mostrar() {
@@ -282,16 +280,5 @@ object menu {
 
   method detenerDeteccionGameOver() {
     detectarGameOver.stop()
-  }
-
-  method cambiarFondoNivel(numeroNivel) {
-    if (fondoNivelActual != null) {
-        game.removeVisual(fondoNivelActual)
-    }
-
-    if (numeroNivel == 2) {
-        fondoNivelActual = fondoNivel2
-        game.addVisual(fondoNivelActual)
-    }
   }
 }

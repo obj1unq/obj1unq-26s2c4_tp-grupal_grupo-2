@@ -2,9 +2,11 @@ import personajes.*
 import cosasEntorno.*
 import direcciones.*
 import vida.*
+import menu.*
 
 class Nivel {
     const property mapa
+    const property fondo
     var visuals = []
 
     method construirVisuals() {
@@ -30,9 +32,9 @@ class Nivel {
     method dibujarMapa() {
         self.construirVisuals()
 
-        visuals.forEach({ visual =>
-            game.addVisual(visual)
-        })
+        game.addVisual(fondo)
+
+        visuals.forEach({ visual => game.addVisual(visual)})
 
         gg.redibujar()
     }
@@ -46,9 +48,9 @@ class Nivel {
     }
 
     method borrarMapa() {
-        visuals.forEach({ visual =>
-            game.removeVisual(visual)
-    })
+        game.removeVisual(fondo)
+
+        visuals.forEach({ visual => game.removeVisual(visual)})
     }
 }
 
@@ -66,7 +68,7 @@ const nivel1 = new Nivel(
         [aa,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,aa],
         [aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa],
         [ll,cc,cc,cc,cc,cc,cc,__,__,__,__,i1,i2,i3,i4]
-    ].reverse()
+    ].reverse(), fondo = new Menu(image = "fondo1.jpg", position = game.origin())
 )
 
 const nivel2 = new Nivel(
@@ -82,7 +84,7 @@ const nivel2 = new Nivel(
         [at,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,at],
         [at,at,at,at,at,at,at,at,at,at,at,at,at,at,at],
         [ll,cc,cc,cc,cc,cc,cc,cc,cc,__,__,i1,i2,i3,i4]
-    ].reverse()
+    ].reverse(), fondo = new Menu(image = "fondo2.jpg", position = game.origin())
 )
 
 object aa {

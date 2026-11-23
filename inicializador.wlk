@@ -69,8 +69,6 @@ object inicializador {
 
             administradorNiveles.avanzarNivel()
 
-            menu.cambiarFondoNivel(administradorNiveles.numeroNivelActual())
-
             administradorNiveles.nivelActual().dibujarMapa()
         }
     }
