@@ -57,21 +57,22 @@ object inicializador {
     )
 
     method verificarAvance() {
-        if (generadorGoblins.puedeAvanzarNivel() &&
-            administradorNiveles.haySiguienteNivel()) {
+    if (generadorGoblins.puedeAvanzarNivel() && administradorNiveles.haySiguienteNivel()) {
 
-            administradorNiveles.nivelActual().borrarMapa()
+        administradorNiveles.nivelActual().pararMusica()
+        administradorNiveles.nivelActual().borrarMapa()
 
-            generadorGoblins.reiniciar()
-            generadorDeManzanas.reiniciar()
-            generadorDePociones.reiniciar()
-            generadorCrafteo.reiniciar()
+        generadorGoblins.reiniciar()
+        generadorDeManzanas.reiniciar()
+        generadorDePociones.reiniciar()
+        generadorCrafteo.reiniciar()
 
-            administradorNiveles.avanzarNivel()
+        administradorNiveles.avanzarNivel()
 
-            administradorNiveles.nivelActual().dibujarMapa()
-        }
+        administradorNiveles.nivelActual().dibujarMapa()
+        administradorNiveles.nivelActual().empezarMusica()
     }
+}
 
     method iniciarTicks() {
         animacionMovimientoGuerrero.start()

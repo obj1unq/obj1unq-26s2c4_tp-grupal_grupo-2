@@ -3,11 +3,21 @@ import cosasEntorno.*
 import direcciones.*
 import vida.*
 import menu.*
+import musica.*
 
 class Nivel {
     const property mapa
     const property fondo
+    const property musica
     var visuals = []
+
+    method empezarMusica() {
+        musica.empezarMusica()
+    }
+
+    method pararMusica() {
+        musica.pararMusica()
+    }
 
     method construirVisuals() {
         visuals = []
@@ -68,7 +78,7 @@ const nivel1 = new Nivel(
         [aa,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,aa],
         [aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa],
         [ll,cc,cc,cc,cc,cc,cc,__,__,__,__,i1,i2,i3,i4]
-    ].reverse(), fondo = new Menu(image = "fondo1.jpg", position = game.origin())
+    ].reverse(), fondo = new Menu(image = "fondo1.jpg", position = game.origin()), musica = musicaNivel1
 )
 
 const nivel2 = new Nivel(
@@ -84,7 +94,7 @@ const nivel2 = new Nivel(
         [at,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,at],
         [at,at,at,at,at,at,at,at,at,at,at,at,at,at,at],
         [ll,cc,cc,cc,cc,cc,cc,cc,cc,__,__,i1,i2,i3,i4]
-    ].reverse(), fondo = new Menu(image = "fondo2.jpg", position = game.origin())
+    ].reverse(), fondo = new Menu(image = "fondo2.jpg", position = game.origin()), musica = musicaNivel2
 )
 
 object aa {

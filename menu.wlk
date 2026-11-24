@@ -45,15 +45,17 @@ class Pantalla {
 
 
 
+
 class SecuenciaImagen inherits Pantalla {
 
   var imagenInicial = 1
-  var cantImagenes
+  const property cantImagenes
+  const property musica
   var imagenActual = null
 
   override method mostrar() {
     musicaMenu.pararMusica()
-    musicaImagen1.empezarMusica()
+    musica.empezarMusica()
     self.mostrarImagen()
   }
 
@@ -64,7 +66,10 @@ class SecuenciaImagen inherits Pantalla {
 
     var nombreImagen = "imagen_1_" + imagenInicial + ".png"
 
-    imagenActual = new Menu(image = nombreImagen, position = game.origin())
+    imagenActual = new Menu(
+      image = nombreImagen,
+      position = game.origin()
+    )
 
     game.addVisual(imagenActual)
   }
@@ -76,12 +81,13 @@ class SecuenciaImagen inherits Pantalla {
     }
     else {
       imagenInicial = 1
-      musicaImagen1.pararMusica()
       menu.cambiarPantalla(juego)
     }
   }
 
   override method ocultar() {
+    musica.pararMusica()
+
     if (imagenActual != null) {
       game.removeVisual(imagenActual)
       imagenActual = null
@@ -92,6 +98,7 @@ class SecuenciaImagen inherits Pantalla {
   override method abrirControles() {}
   override method detectarMuerte() {}
 }
+
 
 
 // --------------------------------
@@ -164,11 +171,13 @@ class Juego inherits Pantalla {
 
   override method mostrar() {
     inicializador.preparar()
+    administradorNiveles.nivelActual().empezarMusica()
     inicializador.iniciarTicks()
     menu.iniciarDeteccionGameOver()
   }
 
   override method ocultar() {
+    administradorNiveles.nivelActual().pararMusica()
     inicializador.detenerTicks()
     menu.detenerDeteccionGameOver()
   }
@@ -181,6 +190,7 @@ class Juego inherits Pantalla {
 
   override method detectarMuerte() {
     if (guerrero.estaMuerto()) {
+      musicaGameOver.empezarMusica()
       menu.cambiarPantalla(gameOver)
     }
   }
@@ -202,11 +212,10 @@ class GameOver inherits Pantalla {
     game.removeVisual(pantallaGameOver)
   }
 
-  override method confirmar() {}
+  override method confirmar() {
+  }
 
   override method volver() {
-    administradorNiveles.reiniciar()
-    menu.cambiarPantalla(menuPrincipal)
 }
 
   override method abrirControles() {}
@@ -224,7 +233,7 @@ const menuPrincipal = new MenuPrincipal()
 const controles     = new Control()
 const juego         = new Juego()
 const gameOver      = new GameOver()
-const imagenes1     = new SecuenciaImagen(cantImagenes = 13)
+const imagenes1     = new SecuenciaImagen(cantImagenes = 13, musica = musicaImagen1)
 
 
 // --------------------------------
