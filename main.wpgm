@@ -4,7 +4,6 @@ import menu.*
 import mapa.*
 
 program OrcSlayer {
-  inicializador.preparar()
   menu.mostrar()
   game.start()
 }

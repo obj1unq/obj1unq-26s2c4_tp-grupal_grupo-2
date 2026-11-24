@@ -6,6 +6,7 @@ import mapa.*
 import cosasEntorno.*
 import administradorNiveles.*
 import menu.*
+import musica.*
 
 
 
@@ -94,11 +95,7 @@ object inicializador {
             generadorDePociones.reiniciar()
             generadorCrafteo.reiniciar()
 
-            administradorNiveles.avanzarNivel()
-
-            menu.cambiarFondoNivel(administradorNiveles.numeroNivelActual())
-
-            administradorNiveles.nivelActual().dibujarMapa()
+            menu.cambiarPantalla(secuencias.get(administradorNiveles.numeroNivelActual()))
         }
     }
 
@@ -126,7 +123,9 @@ object inicializador {
 
     method preparar() {
         administradorNiveles.nivelActual().dibujarMapa()
-
+    }
+    
+    method configurarControles(){
         keyboard.e().onPressDo({ guerrero.interactuar() })
         keyboard.t().onPressDo({ guerrero.transformar() })
 

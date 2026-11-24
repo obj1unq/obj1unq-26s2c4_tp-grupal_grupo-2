@@ -5,6 +5,7 @@ import cosasEntorno.*
 import vida.*
 import mapa.*
 import administradorNiveles.*
+import musica.*
 
 
 
@@ -182,6 +183,7 @@ class Guerrero inherits Personaje {
 
   method transformar() {
     if(self.sePuedeTransformar()){
+      subidaDeNivel.empezarMusica()
       self.accionar(self.transformacion(), nivel)
     }
   }

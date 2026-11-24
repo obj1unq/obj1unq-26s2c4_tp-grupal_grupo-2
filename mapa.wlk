@@ -2,11 +2,23 @@ import personajes.*
 import cosasEntorno.*
 import direcciones.*
 import vida.*
+import menu.*
+import musica.*
 import administradorNiveles.*
 
 class Nivel {
     const property mapa
+    const property fondo
+    const property musica
     var visuals = []
+
+    method empezarMusica() {
+        musica.empezarMusica()
+    }
+
+    method pararMusica() {
+        musica.pararMusica()
+    }
 
     method construirVisuals() {
         visuals = []
@@ -31,9 +43,9 @@ class Nivel {
     method dibujarMapa() {
         self.construirVisuals()
 
-        visuals.forEach({ visual =>
-            game.addVisual(visual)
-        })
+        game.addVisual(fondo)
+
+        visuals.forEach({ visual => game.addVisual(visual)})
 
         gg.redibujar()
 
@@ -51,9 +63,10 @@ class Nivel {
     }
 
     method borrarMapa() {
-        visuals.forEach({ visual =>
-            game.removeVisual(visual)
-        })
+        game.removeVisual(fondo)
+
+        visuals.forEach({ visual => game.removeVisual(visual)})
+
         barraVidaJefe.eliminar()
     }
 }
@@ -72,7 +85,7 @@ const nivel1 = new Nivel(
         [aa,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,aa],
         [aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa],
         [ll,cc,cc,cc,cc,cc,cc,__,__,__,__,i1,i2,i3,i4]
-    ].reverse()
+    ].reverse(), fondo = new Menu(image = "fondo1.jpg", position = game.origin()), musica = musicaNivel1
 )
 
 const nivel2 = new Nivel(
@@ -88,7 +101,7 @@ const nivel2 = new Nivel(
         [at,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,at],
         [at,at,at,at,at,at,at,at,at,at,at,at,at,at,at],
         [ll,cc,cc,cc,cc,cc,cc,cc,cc,__,__,i1,i2,i3,i4]
-    ].reverse()
+    ].reverse(), fondo = new Menu(image = "fondo2.jpg", position = game.origin()), musica = musicaNivel2
 )
 
 const nivel3 = new Nivel(
@@ -104,7 +117,7 @@ const nivel3 = new Nivel(
         [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
         [an,__,__,__,__,__,__,gg,__,__,__,__,__,__,an],
         [ll,cc,cc,cc,cc,cc,cc,cc,cc,cc,cc,i1,i2,i3,i4]
-    ].reverse()
+    ].reverse(), fondo = new Menu(image = "fondo3.jpg", position = game.origin()), musica = musicaNivel3
 )
 
 object aa {

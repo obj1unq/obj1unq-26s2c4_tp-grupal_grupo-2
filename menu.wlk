@@ -2,6 +2,8 @@
 import wollok.game.*
 import inicializador.*
 import personajes.*
+import musica.*
+import administradorNiveles.*
 
 // --------------------------------
 // ELEMENTOS VISUALES
@@ -12,9 +14,9 @@ class Menu {
   var property position
 }
 
-const botonStart = new Menu(image = "boton_start.png", position = game.at(5, 5))
-const botonControles = new Menu(image = "boton_controles.png", position = game.at(5, 3))
-const fondoMenu = new Menu(image = "fondo_menu.png", position = game.origin())
+const botonStart        = new Menu(image = "boton_start.png", position = game.at(5, 5))
+const botonControles    = new Menu(image = "boton_controles.png", position = game.at(5, 3))
+const fondoMenu         = new Menu(image = "fondo_menu.png", position = game.origin())
 const pantallaControles = new Menu(image = "pantalla_controles.png", position = game.origin())
 const pantallaGameOver = new Menu(image = "pantalla_game_over.png", position = game.origin())
 const fondoNivel2 = new Menu(image = "fondo2.jpg", position = game.origin())
@@ -38,6 +40,69 @@ class Pantalla {
   method detectarMuerte()
 
 }
+// --------------------------------
+// SECUENCIA DE IMAGENES
+// --------------------------------
+
+
+
+
+class SecuenciaImagen inherits Pantalla {
+
+    var imagenInicial = 1
+    const property cantImagenes
+    const property musica
+    const property prefijoImagen
+    const property puedeAvanzarNivel
+    var imagenActual = null
+
+    override method mostrar() {
+        musica.empezarMusica()
+        self.mostrarImagen()
+    }
+
+    method mostrarImagen() {
+        if (imagenActual != null) {
+            game.removeVisual(imagenActual)
+        }
+
+        const nombreImagen = prefijoImagen + imagenInicial + ".png"
+
+        imagenActual = new Menu(image = nombreImagen, position = game.origin())
+
+        game.addVisual(imagenActual)
+    }
+
+    override method confirmar() {
+        if (imagenInicial < cantImagenes) {
+            imagenInicial += 1
+            self.mostrarImagen()
+        }
+        else {
+            imagenInicial = 1
+
+            if (puedeAvanzarNivel) {
+                administradorNiveles.avanzarNivel()
+            }
+
+            menu.cambiarPantalla(juego)
+        }
+    }
+
+    override method ocultar() {
+        musica.pararMusica()
+
+        if (imagenActual != null) {
+            game.removeVisual(imagenActual)
+            imagenActual = null
+        }
+    }
+
+    override method volver() {}
+    override method abrirControles() {}
+    override method detectarMuerte() {}
+}
+
 
 
 // --------------------------------
@@ -47,6 +112,7 @@ class Pantalla {
 class MenuPrincipal inherits Pantalla {
 
   override method mostrar() {
+    musicaMenu.empezarMusica()
     game.addVisual(fondoMenu)
     game.addVisual(botonStart)
     game.addVisual(botonControles)
@@ -59,7 +125,8 @@ class MenuPrincipal inherits Pantalla {
   }
 
   override method confirmar() {
-    menu.cambiarPantalla(juego)
+    musicaMenu.pararMusica()
+    menu.cambiarPantalla(imagenes1)
   }
 
   override method abrirControles() {
@@ -109,11 +176,14 @@ class Control inherits Pantalla {
 class Juego inherits Pantalla {
 
   override method mostrar() {
+    inicializador.preparar()
+    administradorNiveles.nivelActual().empezarMusica()
     inicializador.iniciarTicks()
     menu.iniciarDeteccionGameOver()
   }
 
   override method ocultar() {
+    administradorNiveles.nivelActual().pararMusica()
     inicializador.detenerTicks()
     menu.detenerDeteccionGameOver()
   }
@@ -125,7 +195,8 @@ class Juego inherits Pantalla {
   override method abrirControles() {}
 
   override method detectarMuerte() {
-    if (guerrero.vida() <= 0) {
+    if (guerrero.estaMuerto()) {
+      musicaGameOver.empezarMusica()
       menu.cambiarPantalla(gameOver)
     }
   }
@@ -147,11 +218,11 @@ class GameOver inherits Pantalla {
     game.removeVisual(pantallaGameOver)
   }
 
-  override method confirmar() {}
+  override method confirmar() {
+  }
 
   override method volver() {
-    menu.cambiarPantalla(menuPrincipal)
-  }
+}
 
   override method abrirControles() {}
 
@@ -169,6 +240,13 @@ const controles     = new Control()
 const juego         = new Juego()
 const gameOver      = new GameOver()
 
+const imagenes1 = new SecuenciaImagen(cantImagenes = 13, musica = musicaImagen1, prefijoImagen = "imagen_1_", puedeAvanzarNivel = false)
+
+const imagenes2 = new SecuenciaImagen(cantImagenes = 13, musica = musicaImagen2, prefijoImagen = "imagen_2_", puedeAvanzarNivel = true)
+
+const imagenes3 = new SecuenciaImagen(cantImagenes = 14, musica = musicaImagen3, prefijoImagen = "imagen_3_", puedeAvanzarNivel = true)
+
+const secuencias = [imagenes1, imagenes2, imagenes3]
 
 // --------------------------------
 // GESTOR DE PANTALLAS
@@ -177,9 +255,7 @@ const gameOver      = new GameOver()
 object menu {
 
   var pantallaActual = menuPrincipal
-
   var fondoNivelActual = null
-
   const detectarGameOver = game.tick(1300, { self.detectarMuerte() }, false)
 
   method mostrar() {
@@ -187,7 +263,11 @@ object menu {
     game.height(11)
     game.cellSize(50)
     game.title("Orc Slayer")
-    game.boardGround("fondo1.jpg")
+
+    inicializador.configurarControles()
+
+
+    musicaMenu.empezarMusica()
 
     pantallaActual.mostrar()
 
@@ -225,19 +305,16 @@ object menu {
   method detenerDeteccionGameOver() {
     detectarGameOver.stop()
   }
-
   method cambiarFondoNivel(numeroNivel) {
     if (fondoNivelActual != null) {
-        game.removeVisual(fondoNivelActual)
+      game.removeVisual(fondoNivelActual)
     }
-
     if (numeroNivel == 2) {
-        fondoNivelActual = fondoNivel2
-        game.addVisual(fondoNivelActual)
-    }
-    else {
+      fondoNivelActual = fondoNivel2
+      game.addVisual(fondoNivelActual)
+    } else {
       fondoNivelActual = fondoNivel3
       game.addVisual(fondoNivelActual)
+      }
     }
-  }
 }
