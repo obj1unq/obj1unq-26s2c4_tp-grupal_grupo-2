@@ -12,6 +12,14 @@ import musica.*
 
 object inicializador {
 
+    var secuenciaPendiente = null
+
+    const transicion = game.tick(
+        1500,
+        { self.ejecutarTransicion() },
+        false
+    )
+
     const animacionMovimientoGuerrero = game.tick(
         100,
         { guerrero.estado().avanzarFrame(guerrero) },
@@ -85,18 +93,38 @@ object inicializador {
     )
 
     method verificarAvance() {
-        if (generadorGoblins.puedeAvanzarNivel() &&
+        if (administradorNiveles.numeroNivelActual() == 3 &&
+            jefeGoblin.estaMuerto()) {
+
+            secuenciaPendiente = imagenes4
+            verificarCambioNivel.stop()
+            transicion.start()
+        }
+
+        else if (generadorGoblins.puedeAvanzarNivel() &&
             administradorNiveles.haySiguienteNivel()) {
 
-            administradorNiveles.nivelActual().borrarMapa()
+            secuenciaPendiente = secuencias.get(
+                administradorNiveles.numeroNivelActual()
+            )
 
-            generadorGoblins.reiniciar()
-            generadorDeManzanas.reiniciar()
-            generadorDePociones.reiniciar()
-            generadorCrafteo.reiniciar()
-
-            menu.cambiarPantalla(secuencias.get(administradorNiveles.numeroNivelActual()))
+            verificarCambioNivel.stop()
+            transicion.start()
         }
+    }
+
+    method ejecutarTransicion() {
+        transicion.stop()
+
+        administradorNiveles.nivelActual().borrarMapa()
+
+        generadorGoblins.reiniciar()
+        generadorDeManzanas.reiniciar()
+        generadorDePociones.reiniciar()
+        generadorCrafteo.reiniciar()
+
+        menu.cambiarPantalla(secuenciaPendiente)
+        secuenciaPendiente = null
     }
 
     method iniciarTicks() {

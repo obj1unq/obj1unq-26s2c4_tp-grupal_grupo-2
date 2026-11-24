@@ -62,9 +62,7 @@ class SecuenciaImagen inherits Pantalla {
     }
 
     method mostrarImagen() {
-        if (imagenActual != null) {
-            game.removeVisual(imagenActual)
-        }
+        self.verificarImagenActual()
 
         const nombreImagen = prefijoImagen + imagenInicial + ".png"
 
@@ -73,21 +71,34 @@ class SecuenciaImagen inherits Pantalla {
         game.addVisual(imagenActual)
     }
 
-    override method confirmar() {
-        if (imagenInicial < cantImagenes) {
-            imagenInicial += 1
-            self.mostrarImagen()
-        }
-        else {
-            imagenInicial = 1
-
-            if (puedeAvanzarNivel) {
-                administradorNiveles.avanzarNivel()
-            }
-
-            menu.cambiarPantalla(juego)
+    method verificarImagenActual(){
+      if (imagenActual != null) {
+            game.removeVisual(imagenActual)
         }
     }
+
+    override method confirmar() {
+        if (imagenInicial < cantImagenes) {
+            self.siguienteImagen()
+        }
+        else {
+            self.siguienteNivel()
+        }
+    }
+
+    method siguienteImagen(){
+      imagenInicial += 1
+      self.mostrarImagen()
+    }
+
+    method siguienteNivel(){
+      imagenInicial = 1
+      if (puedeAvanzarNivel) {
+        administradorNiveles.avanzarNivel()
+      }
+      menu.cambiarPantalla(juego)
+    }
+
 
     override method ocultar() {
         musica.pararMusica()
@@ -103,7 +114,15 @@ class SecuenciaImagen inherits Pantalla {
     override method detectarMuerte() {}
 }
 
+class SecuenciaImagenFinal inherits SecuenciaImagen {
 
+  override method confirmar() {
+      if (imagenInicial < cantImagenes) {
+          imagenInicial += 1
+          self.mostrarImagen()
+      }
+  }
+}
 
 // --------------------------------
 // PANTALLA PRINCIPAL
@@ -244,9 +263,11 @@ const imagenes1 = new SecuenciaImagen(cantImagenes = 13, musica = musicaImagen1,
 
 const imagenes2 = new SecuenciaImagen(cantImagenes = 13, musica = musicaImagen2, prefijoImagen = "imagen_2_", puedeAvanzarNivel = true)
 
-const imagenes3 = new SecuenciaImagen(cantImagenes = 14, musica = musicaImagen3, prefijoImagen = "imagen_3_", puedeAvanzarNivel = true)
+const imagenes3 = new SecuenciaImagen(cantImagenes = 21, musica = musicaImagen3, prefijoImagen = "imagen_3_", puedeAvanzarNivel = true)
 
-const secuencias = [imagenes1, imagenes2, imagenes3]
+const imagenes4 = new SecuenciaImagenFinal(cantImagenes = 7, musica = musicaGanador, prefijoImagen = "imagen_4_", puedeAvanzarNivel = false)
+
+const secuencias = [imagenes1, imagenes2, imagenes3, imagenes4]
 
 // --------------------------------
 // GESTOR DE PANTALLAS
