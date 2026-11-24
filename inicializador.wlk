@@ -57,22 +57,19 @@ object inicializador {
     )
 
     method verificarAvance() {
-    if (generadorGoblins.puedeAvanzarNivel() && administradorNiveles.haySiguienteNivel()) {
+        if (generadorGoblins.puedeAvanzarNivel() &&
+            administradorNiveles.haySiguienteNivel()) {
 
-        administradorNiveles.nivelActual().pararMusica()
-        administradorNiveles.nivelActual().borrarMapa()
+            administradorNiveles.nivelActual().borrarMapa()
 
-        generadorGoblins.reiniciar()
-        generadorDeManzanas.reiniciar()
-        generadorDePociones.reiniciar()
-        generadorCrafteo.reiniciar()
+            generadorGoblins.reiniciar()
+            generadorDeManzanas.reiniciar()
+            generadorDePociones.reiniciar()
+            generadorCrafteo.reiniciar()
 
-        administradorNiveles.avanzarNivel()
-
-        administradorNiveles.nivelActual().dibujarMapa()
-        administradorNiveles.nivelActual().empezarMusica()
+            menu.cambiarPantalla(secuencias.get(administradorNiveles.numeroNivelActual()))
+        }
     }
-}
 
     method iniciarTicks() {
         animacionMovimientoGuerrero.start()
@@ -94,7 +91,9 @@ object inicializador {
 
     method preparar() {
         administradorNiveles.nivelActual().dibujarMapa()
-
+    }
+    
+    method configurarControles(){
         keyboard.e().onPressDo({ guerrero.interactuar() })
         keyboard.t().onPressDo({ guerrero.transformar() })
 
