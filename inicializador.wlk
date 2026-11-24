@@ -19,7 +19,11 @@ object inicializador {
 
     const aparicionGoblins = game.tick(
         10000,
-        { generadorGoblins.generar(0, guerrero) },
+        {
+            if (administradorNiveles.numeroNivelActual() < 3) {
+                generadorGoblins.generar(0, guerrero)
+            }
+        },
         false
     )
 
@@ -29,6 +33,16 @@ object inicializador {
             generadorGoblins.goblins().forEach({
                 goblin => goblin.estado().avanzarFrame(goblin)
             })
+        },
+        false
+    )
+
+    const animacionJefe = game.tick(
+        100,
+        {
+            if (administradorNiveles.numeroNivelActual() == 3) {
+                jefeGoblin.estado().avanzarFrame(jefeGoblin)
+            }
         },
         false
     )
@@ -43,9 +57,23 @@ object inicializador {
         false
     )
 
+    const movimientoJefe = game.tick(
+        1500,
+        {
+            if (administradorNiveles.numeroNivelActual() == 3) {
+                jefeGoblin.perseguirGuerrero()
+            }
+        },
+        false
+    )
+
     const manzanasAleatorias = game.tick(
         5000,
-        { generadorDeManzanas.generar(0, guerrero) },
+        {
+            if (administradorNiveles.numeroNivelActual() < 3) {
+                generadorDeManzanas.generar(0, guerrero)
+            }
+        },
         false
     )
 
@@ -81,6 +109,8 @@ object inicializador {
         manzanasAleatorias.start()
         aparicionGoblins.start()
         verificarCambioNivel.start()
+        animacionJefe.start()
+        movimientoJefe.start()
     }
 
     method detenerTicks() {
@@ -90,6 +120,8 @@ object inicializador {
         movimientoGoblins.stop()
         manzanasAleatorias.stop()
         verificarCambioNivel.stop()
+        animacionJefe.stop()
+        movimientoJefe.stop()
     }
 
     method preparar() {

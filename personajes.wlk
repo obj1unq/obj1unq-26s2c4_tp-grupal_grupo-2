@@ -138,7 +138,14 @@ class Guerrero inherits Personaje {
 
   method validarEnemigo() {
     const casilleroAtaque = direccionActual.siguiente(position)
-    generadorGoblins.goblins().forEach({ enemigo => self.fijarEnemigo(enemigo, casilleroAtaque) })
+
+    generadorGoblins.goblins().forEach({
+        enemigo => self.fijarEnemigo(enemigo, casilleroAtaque)
+    })
+
+    if (administradorNiveles.numeroNivelActual() == 3) {
+        self.fijarEnemigo(jefeGoblin, casilleroAtaque)
+    }
   }
 
   override method ejecutarAtaque() {
@@ -233,6 +240,96 @@ class Goblin inherits Personaje {
   }
 }
 
+class JefeGoblin inherits Goblin {
+
+    method inicializar() {
+        vida = 40
+    }
+
+    override method perderEnergia(danio) {
+        super(danio)
+        barraVidaJefe.actualizarVida()
+    }
+}
+
+class SegmentoVidaJefe {
+    var property position
+    const property indice
+
+    method image() {
+        if (jefeGoblin.vida() >= indice * 4) {
+            return "segmento_vida_jefe_lleno.png"
+        }
+        return "segmento_vida_jefe_vacio.png"
+    }
+
+    method esAtravesable() {
+        return true
+    }
+
+    method chocar(personaje) {}
+}
+
+object barraVidaJefe {
+        const segmentos = #{}
+
+        method crear() {
+        segmentos.clear()
+
+        const xInicial = 2
+        const yBarra = 10
+
+        (1..10).forEach({ indice =>
+            const segmento = new SegmentoVidaJefe(
+                position = game.at(xInicial + indice - 1, yBarra),
+                indice = indice
+            )
+
+            segmentos.add(segmento)
+            game.addVisual(segmento)
+        })
+    }
+
+    method actualizarVida() {
+        segmentos.forEach({ segmento =>
+            game.removeVisual(segmento)
+            game.addVisual(segmento)
+        })
+    }
+
+    method actualizarPosicion() {
+        var xInicial = jefeGoblin.position().x() - 5
+
+        if (xInicial < 0) {
+            xInicial = 0
+        }
+
+        if (xInicial > 5) {
+            xInicial = 5
+        }
+
+        const yBarra = jefeGoblin.position().down(1).y()
+
+        segmentos.forEach({ segmento =>
+            game.removeVisual(segmento)
+
+            segmento.position(
+                game.at(xInicial + segmento.indice() - 1, yBarra)
+            )
+
+            game.addVisual(segmento)
+        })
+    }
+
+    method eliminar() {
+        segmentos.forEach({ segmento =>
+            game.removeVisual(segmento)
+        })
+
+        segmentos.clear()
+    }
+}
+
 
 class GeneradorGoblins inherits Generador {
   var property goblins = #{}
@@ -292,3 +389,13 @@ var generadorGoblins = new GeneradorGoblins(capacidad = 5)
 var estadosGuerrero = new EstadoGuerrero()
 
 var guerrero = new Guerrero(estados = estadosGuerrero, estado = estadosGuerrero.normal(), position = game.origin(), personaje = "guerrero", nivel = nivelGuerrero)
+
+var estadosJefeGoblin = new EstadoJefeGoblin()
+
+var jefeGoblin = new JefeGoblin(
+    estados = estadosJefeGoblin,
+    estado = estadosJefeGoblin.normal(),
+    position = game.origin(),
+    personaje = "goblin",
+    nivel = nivelGoblinJefe
+)

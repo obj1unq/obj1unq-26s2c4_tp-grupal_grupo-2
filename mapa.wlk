@@ -2,6 +2,7 @@ import personajes.*
 import cosasEntorno.*
 import direcciones.*
 import vida.*
+import administradorNiveles.*
 
 class Nivel {
     const property mapa
@@ -35,6 +36,10 @@ class Nivel {
         })
 
         gg.redibujar()
+
+        if (administradorNiveles.nivelActual() == nivel3) {
+            barraVidaJefe.crear()
+        }
     }
 
     method ancho() {
@@ -48,7 +53,8 @@ class Nivel {
     method borrarMapa() {
         visuals.forEach({ visual =>
             game.removeVisual(visual)
-    })
+        })
+        barraVidaJefe.eliminar()
     }
 }
 
@@ -82,6 +88,22 @@ const nivel2 = new Nivel(
         [at,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,at],
         [at,at,at,at,at,at,at,at,at,at,at,at,at,at,at],
         [ll,cc,cc,cc,cc,cc,cc,cc,cc,__,__,i1,i2,i3,i4]
+    ].reverse()
+)
+
+const nivel3 = new Nivel(
+    mapa = [
+        [an,an,__,__,__,__,__,__,__,__,__,__,__,an,an],
+        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
+        [an,__,__,__,__,__,cj,__,__,__,__,__,__,__,an],
+        [an,__,__,__,__,fj,__,jb,__,__,__,__,__,__,an],
+        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
+        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
+        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
+        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
+        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
+        [an,__,__,__,__,__,__,gg,__,__,__,__,__,__,an],
+        [ll,cc,cc,cc,cc,cc,cc,cc,cc,cc,cc,i1,i2,i3,i4]
     ].reverse()
 )
 
@@ -198,5 +220,31 @@ object pv {
 object at {
     method crearVisual(position) {
         return new Pino(image = "pino2.png", position = position)
+    }
+}
+
+object jb {
+    method crearVisual(position) {
+        jefeGoblin.inicializar()
+        jefeGoblin.position(position)
+        return jefeGoblin
+    }
+}  
+
+object an {
+    method crearVisual(position) {
+        return new Pino(image = "pino3.png", position = position)
+    }
+}
+
+object cj {
+    method crearVisual(position) {
+        return new Choza(image = "chozaJefe.png", position = position)
+    }
+}
+
+object fj {
+    method crearVisual(position) {
+        return new Fogata(image = "fogata.png", position = position)
     }
 }

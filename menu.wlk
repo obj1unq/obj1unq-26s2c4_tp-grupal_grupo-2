@@ -18,7 +18,7 @@ const fondoMenu = new Menu(image = "fondo_menu.png", position = game.origin())
 const pantallaControles = new Menu(image = "pantalla_controles.png", position = game.origin())
 const pantallaGameOver = new Menu(image = "pantalla_game_over.png", position = game.origin())
 const fondoNivel2 = new Menu(image = "fondo2.jpg", position = game.origin())
-
+const fondoNivel3 = new Menu(image = "fondo3.jpg", position = game.origin())
 
 // --------------------------------
 // CLASE PADRE
@@ -234,6 +234,10 @@ object menu {
     if (numeroNivel == 2) {
         fondoNivelActual = fondoNivel2
         game.addVisual(fondoNivelActual)
+    }
+    else {
+      fondoNivelActual = fondoNivel3
+      game.addVisual(fondoNivelActual)
     }
   }
 }
