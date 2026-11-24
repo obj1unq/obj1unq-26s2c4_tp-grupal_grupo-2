@@ -18,8 +18,9 @@ const botonStart        = new Menu(image = "boton_start.png", position = game.at
 const botonControles    = new Menu(image = "boton_controles.png", position = game.at(5, 3))
 const fondoMenu         = new Menu(image = "fondo_menu.png", position = game.origin())
 const pantallaControles = new Menu(image = "pantalla_controles.png", position = game.origin())
-const pantallaGameOver  = new Menu(image = "pantalla_game_over.png", position = game.origin())
-
+const pantallaGameOver = new Menu(image = "pantalla_game_over.png", position = game.origin())
+const fondoNivel2 = new Menu(image = "fondo2.jpg", position = game.origin())
+const fondoNivel3 = new Menu(image = "fondo3.jpg", position = game.origin())
 
 // --------------------------------
 // CLASE PADRE
@@ -238,12 +239,14 @@ const menuPrincipal = new MenuPrincipal()
 const controles     = new Control()
 const juego         = new Juego()
 const gameOver      = new GameOver()
+
 const imagenes1 = new SecuenciaImagen(cantImagenes = 13, musica = musicaImagen1, prefijoImagen = "imagen_1_", puedeAvanzarNivel = false)
 
 const imagenes2 = new SecuenciaImagen(cantImagenes = 13, musica = musicaImagen2, prefijoImagen = "imagen_2_", puedeAvanzarNivel = true)
-//const imagenes3 = new SecuenciaImagen(cantImagenes = 13, musica = musicaImagen3, prefijoImagen = "imagen_3_", avanzarNivel = true)
 
-const secuencias = [imagenes1, imagenes2]
+const imagenes3 = new SecuenciaImagen(cantImagenes = 14, musica = musicaImagen3, prefijoImagen = "imagen_3_", puedeAvanzarNivel = true)
+
+const secuencias = [imagenes1, imagenes2, imagenes3]
 
 // --------------------------------
 // GESTOR DE PANTALLAS
@@ -252,6 +255,7 @@ const secuencias = [imagenes1, imagenes2]
 object menu {
 
   var pantallaActual = menuPrincipal
+  var fondoNivelActual = null
   const detectarGameOver = game.tick(1300, { self.detectarMuerte() }, false)
 
   method mostrar() {
@@ -301,4 +305,16 @@ object menu {
   method detenerDeteccionGameOver() {
     detectarGameOver.stop()
   }
+  method cambiarFondoNivel(numeroNivel) {
+    if (fondoNivelActual != null) {
+      game.removeVisual(fondoNivelActual)
+    }
+    if (numeroNivel == 2) {
+      fondoNivelActual = fondoNivel2
+      game.addVisual(fondoNivelActual)
+    } else {
+      fondoNivelActual = fondoNivel3
+      game.addVisual(fondoNivelActual)
+      }
+    }
 }

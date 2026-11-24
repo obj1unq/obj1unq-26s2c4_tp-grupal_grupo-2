@@ -13,6 +13,7 @@ const musicaImagen3 = new MusicaImagen(archivo = "musica_imagen_3.mp3")
 const musicaGameOver = new Musica(archivo = "game_over.mp3")
 const subidaDeNivel = new Musica(archivo = "subida_nivel.mp3")
 
+
 class Musica {
     const archivo
     var musica = null
