@@ -10,47 +10,32 @@ class Imagen {
     method position(position){
         position = position
     }
-    method esAtravesable()
+    method esAtravesable() {
+        return false
+    }
 
     method chocar(personaje){}
 
 }   
 
-class Pino inherits Imagen{
+class Pino inherits Imagen {
 
     override method esAtravesable(){
         return false 
     }
 }
 
-class Piedra inherits Imagen{
+class Piedra inherits Imagen {}
 
-    override method esAtravesable(){
-        return false 
-    }
+class Logo inherits Imagen {}
 
+class Fogata inherits Imagen {}
 
-}
-
-class Logo inherits Imagen{
-
-    override method esAtravesable(){
-        return false 
-    }
-}
+class Choza inherits Imagen {}
 
 
 
-class Inventario inherits Imagen {
-
-    override method esAtravesable(){
-        return false
-    }
-
-}
-
-
-
+class Inventario inherits Imagen {}
 
 
 class GeneradorCraft inherits Generador {

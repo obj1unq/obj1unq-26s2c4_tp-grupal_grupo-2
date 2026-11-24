@@ -175,3 +175,30 @@ class EstadoGuerrero inherits EstadoPersonaje {
         return muerteGuerrero
     }
 }
+
+
+
+class MuerteJefeGoblin inherits Estado {
+
+    override method finalizarAnimacion(personaje) {
+        game.removeVisual(personaje)
+    }
+
+    override method ejecutar(personaje, nivel) {}
+
+}
+
+class EstadoJefeGoblin inherits EstadoGoblin {
+
+    const muerteJefe = new MuerteJefeGoblin(
+        nombre = "muerte",
+        puedeMover = false,
+        puedeAtacar = false,
+        maxFramesEstado = 8
+    )
+
+    override method muerte() {
+        return muerteJefe
+    }
+
+}
