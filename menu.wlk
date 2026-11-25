@@ -121,6 +121,10 @@ class SecuenciaImagenFinal inherits SecuenciaImagen {
           imagenInicial += 1
           self.mostrarImagen()
       }
+      else {
+          musica.pararMusica()
+          game.stop()
+      }
   }
 }
 
@@ -238,6 +242,8 @@ class GameOver inherits Pantalla {
   }
 
   override method confirmar() {
+    musicaGameOver.pararMusica()
+    game.stop()
   }
 
   override method volver() {
