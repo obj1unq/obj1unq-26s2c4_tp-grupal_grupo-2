@@ -10,6 +10,7 @@ class Nivel {
     const property mapa
     const property fondo
     const property musica
+    const property elementosDeTransformacion
     var visuals = []
 
     method empezarMusica() {
@@ -85,8 +86,7 @@ const nivel1 = new Nivel(
         [aa,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,aa],
         [aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa,aa],
         [ll,cc,cc,cc,cc,cc,cc,__,__,__,__,i1,i2,i3,i4]
-    ].reverse(), fondo = new Menu(image = "fondo1.jpg", position = game.origin()), musica = musicaNivel1
-)
+    ].reverse(), fondo = new Menu(image = "fondo1.jpg", position = game.origin()), musica = musicaNivel1, elementosDeTransformacion = [collar2, botas2, lingote2, espada2])
 
 const nivel2 = new Nivel(
     mapa = [
@@ -101,8 +101,7 @@ const nivel2 = new Nivel(
         [at,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,pv,at],
         [at,at,at,at,at,at,at,at,at,at,at,at,at,at,at],
         [ll,cc,cc,cc,cc,cc,cc,cc,cc,__,__,i1,i2,i3,i4]
-    ].reverse(), fondo = new Menu(image = "fondo2.jpg", position = game.origin()), musica = musicaNivel2
-)
+    ].reverse(), fondo = new Menu(image = "fondo2.jpg", position = game.origin()), musica = musicaNivel2, elementosDeTransformacion = [botas3, armadura3, lingote3, espada3])
 
 const nivel3 = new Nivel(
     mapa = [
@@ -117,8 +116,7 @@ const nivel3 = new Nivel(
         [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
         [an,__,__,__,__,__,__,gg,__,__,__,__,__,__,an],
         [ll,cc,cc,cc,cc,cc,cc,cc,cc,cc,cc,i1,i2,i3,i4]
-    ].reverse(), fondo = new Menu(image = "fondo3.jpg", position = game.origin()), musica = musicaNivel3
-)
+    ].reverse(), fondo = new Menu(image = "fondo3.jpg", position = game.origin()), musica = musicaNivel3, elementosDeTransformacion = [])
 
 object aa {
     method crearVisual(position) {
@@ -191,15 +189,19 @@ object cc {
 
     method crearVisual(position) {
         indice += 1
+        proximaPosicion = position.x() + 1
+
         return new Corazon(position = position, indice = indice)
     }
 
     method agregarCorazon() {
         indice += 1
+
         game.addVisual(new Corazon(
             position = game.at(proximaPosicion, 0),
             indice = indice
         ))
+
         proximaPosicion += 1
     }
 
