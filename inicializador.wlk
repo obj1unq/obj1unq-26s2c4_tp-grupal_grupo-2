@@ -77,7 +77,7 @@ object inicializador {
     )
 
     const manzanasAleatorias = game.tick(
-        5000,
+        18000,
         {
             if (administradorNiveles.numeroNivelActual() < 3) {
                 generadorDeManzanas.generar(0, guerrero)
