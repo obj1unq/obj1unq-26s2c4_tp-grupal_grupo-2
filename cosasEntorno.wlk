@@ -1,4 +1,5 @@
 import vida.*
+import administradorNiveles.*
 
 class Imagen {
     var property image    = null
@@ -7,8 +8,8 @@ class Imagen {
     method position(){
         return position
     }
-    method position(position){
-        position = position
+    method position(_position){
+        position = _position
     }
     method esAtravesable() {
         return false
@@ -40,30 +41,32 @@ class Inventario inherits Imagen {}
 
 class GeneradorCraft inherits Generador {
     var aparicion = 1
-    var elementos = [espada, collar, botas, lingote]
 
     override method generar(cantidadDeMuertes, personaje) {
-        if (aparicion == cantidadDeMuertes && not elementos.isEmpty()) {
-            aparicion += 1
+        const elementos = administradorNiveles.nivelActual().elementosDeTransformacion()
 
-            const elemento = elementos.anyOne()
-            elementos.remove(elemento)
-            elemento.generarEn(personaje.position())
+        if (aparicion == cantidadDeMuertes && aparicion <= elementos.size()) {
+            elementos.get(aparicion - 1).generarEn(personaje.position())
+            aparicion += 1
         }
     }
 
     override method reiniciar() {
         aparicion = 1
-        elementos = [espada, collar, botas, lingote]
     }
 }
 
 var generadorCrafteo = new GeneradorCraft()
 
-const espada = new ElementoCraft(imagenInventario = "invEspada2.png", image = "espada_lvl2.png")
-const collar = new ElementoCraft(imagenInventario = "invCollar2.png", image = "collar_lvl2.png")
-const botas = new ElementoCraft(imagenInventario = "invBotas2.png", image = "botas_lvl2.png")
-const lingote = new ElementoCraft(imagenInventario = "invLingote2.png", image = "lingote_lvl2.png")
+const espada2 = new ElementoCraft(imagenInventario = "invEspada2.png", image = "espada_lvl2.png")
+const collar2 = new ElementoCraft(imagenInventario = "invCollar2.png", image = "collar_lvl2.png")
+const botas2 = new ElementoCraft(imagenInventario = "invBotas2.png", image = "botas_lvl2.png")
+const lingote2 = new ElementoCraft(imagenInventario = "invLingote2.png", image = "lingote_lvl2.png")
+
+const espada3 = new ElementoCraft(imagenInventario = "invEspada3.png", image = "espada_lvl3.png")
+const armadura3 = new ElementoCraft(imagenInventario = "invArmadura3.png", image = "armadura_lvl3.png")
+const botas3 = new ElementoCraft(imagenInventario = "invBotas3.png", image = "botas_lvl3.png")
+const lingote3 = new ElementoCraft(imagenInventario = "invLingote3.png", image = "lingote_lvl3.png")
 
 class ElementoCraft inherits Imagen{
     var property imagenInventario

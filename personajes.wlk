@@ -204,6 +204,10 @@ class Guerrero inherits Personaje {
     cc.agregarCorazon()
   }
 
+  method nivelActual(){
+    return nivel.nivel()
+  }
+
   method redibujar() {
     game.removeVisual(self)
     game.addVisual(self)
@@ -363,9 +367,9 @@ class GeneradorGoblins inherits Generador {
   }
 
   method puedeAvanzarNivel() {
-      return cantidadMuertes >= capacidad &&
-        guerrero.nivel().nivel() >= 2
-  }
+    return cantidadMuertes >= capacidad &&
+        guerrero.nivelActual() >= administradorNiveles.numeroNivelActual() + 1
+}
 
   override method reiniciar() {
       goblins.forEach({ goblin =>
