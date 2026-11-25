@@ -270,7 +270,7 @@ class SegmentoVidaJefe {
     }
 
     method esAtravesable() {
-        return true
+        return false
     }
 
     method chocar(personaje) {}

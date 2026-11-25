@@ -105,16 +105,16 @@ const nivel2 = new Nivel(
 
 const nivel3 = new Nivel(
     mapa = [
-        [an,an,__,__,__,__,__,__,__,__,__,__,__,an,an],
-        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
-        [an,__,__,__,__,__,cj,__,__,__,__,__,__,__,an],
+        [an,an,__,__,__,__,__,__,__,__,__,__,an,an,an],
+        [an,__,p8,__,__,__,__,__,__,__,__,__,__,__,an],
+        [an,__,__,__,__,__,cj,__,__,__,__,p7,__,__,an],
         [an,__,__,__,__,fj,__,jb,__,__,__,__,__,__,an],
+        [an,__,__,p7,__,__,__,__,__,__,__,__,__,__,an],
         [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
-        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
-        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
-        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
-        [an,__,__,__,__,__,__,__,__,__,__,__,__,__,an],
-        [an,__,__,__,__,__,__,gg,__,__,__,__,__,__,an],
+        [an,__,__,__,__,__,__,__,__,__,__,p9,__,__,an],
+        [an,__,__,p9,__,__,__,__,__,__,__,__,__,__,an],
+        [an,__,__,__,__,__,__,__,__,__,__,__,p7,__,an],
+        [an,__,__,__,__,__,p8,gg,p8,__,__,__,__,__,an],
         [ll,cc,cc,cc,cc,cc,cc,cc,cc,cc,cc,i1,i2,i3,i4]
     ].reverse(), fondo = new Menu(image = "fondo3.jpg", position = game.origin()), musica = musicaNivel3, elementosDeTransformacion = [])
 
@@ -174,6 +174,24 @@ object p5 {
 object p6 {
     method crearVisual(position) {
         return new Piedra(image = "roca3_3.png", position = position)
+    }
+}
+
+object p7 {
+    method crearVisual(position) {
+        return new Piedra(image = "roca2_1.png", position = position)
+    }
+}
+
+object p8 {
+    method crearVisual(position) {
+        return new Piedra(image = "roca2_2.png", position = position)
+    }
+}
+
+object p9 {
+    method crearVisual(position) {
+        return new Piedra(image = "roca2_3.png", position = position)
     }
 }
 

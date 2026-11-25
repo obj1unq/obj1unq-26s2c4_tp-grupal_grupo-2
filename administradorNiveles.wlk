@@ -2,7 +2,7 @@ import mapa.*
 
 
 object administradorNiveles {
-    const niveles = [nivel1, nivel2, nivel3]
+    const niveles = [nivel3]
     var indiceActual = 0
 
     method nivelActual() {
