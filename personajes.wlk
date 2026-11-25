@@ -377,7 +377,7 @@ class GeneradorGoblins inherits Generador {
   method puedeAvanzarNivel() {
     return cantidadMuertes >= self.capacidadActual() &&
         guerrero.nivelActual() >= administradorNiveles.numeroNivelActual() + 1
-}
+  }
 
   override method reiniciar() {
       goblins.forEach({ goblin =>
