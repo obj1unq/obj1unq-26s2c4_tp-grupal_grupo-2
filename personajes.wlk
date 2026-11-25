@@ -340,10 +340,18 @@ object barraVidaJefe {
 class GeneradorGoblins inherits Generador {
   var property goblins = #{}
   var property cantidadMuertes = 0
-  var property capacidad
+
+  method capacidadActual() {
+      if (administradorNiveles.numeroNivelActual() == 1) {
+          return 20
+      }
+      else {
+          return 10
+      }
+  }
 
   override method generar(cantidad, personaje) {
-      if (cantidadMuertes < capacidad) {
+      if (cantidadMuertes < self.capacidadActual()) {
           var posicion = pv.posicionRandom()
           const estadosGoblin = new EstadoGoblin()
           
@@ -367,7 +375,7 @@ class GeneradorGoblins inherits Generador {
   }
 
   method puedeAvanzarNivel() {
-    return cantidadMuertes >= capacidad &&
+    return cantidadMuertes >= self.capacidadActual() &&
         guerrero.nivelActual() >= administradorNiveles.numeroNivelActual() + 1
 }
 
@@ -390,7 +398,7 @@ class GeneradorGoblins inherits Generador {
 }
 }
 
-var generadorGoblins = new GeneradorGoblins(capacidad = 5)
+var generadorGoblins = new GeneradorGoblins()
 
 var estadosGuerrero = new EstadoGuerrero()
 

@@ -40,19 +40,25 @@ class Inventario inherits Imagen {}
 
 
 class GeneradorCraft inherits Generador {
-    var aparicion = 1
+    var aparicion = 2
+    var indiceElemento = 0
 
     override method generar(cantidadDeMuertes, personaje) {
         const elementos = administradorNiveles.nivelActual().elementosDeTransformacion()
 
-        if (aparicion == cantidadDeMuertes && aparicion <= elementos.size()) {
-            elementos.get(aparicion - 1).generarEn(personaje.position())
-            aparicion += 1
+        if (aparicion == cantidadDeMuertes &&
+            indiceElemento < elementos.size()) {
+
+            elementos.get(indiceElemento).generarEn(personaje.position())
+
+            aparicion += 2
+            indiceElemento += 1
         }
     }
 
     override method reiniciar() {
-        aparicion = 1
+        aparicion = 2
+        indiceElemento = 0
     }
 }
 

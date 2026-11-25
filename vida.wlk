@@ -51,8 +51,13 @@ class Energia inherits Imagen{
 }
 
 class Manzana inherits Energia {
-    override method energia(){
+    override method energia() {
         return 1
+    }
+
+    override method remover() {
+        super()
+        generadorDeManzanas.eliminar(self)
     }
 }
 
@@ -75,26 +80,37 @@ class Generador {
     method reiniciar(){}
 }
 
-class GeneradorManzana inherits Generador{
-    var property contador = 0
+class GeneradorManzana inherits Generador {
+    const manzanas = #{}
     const capacidad
-    
-    override method generar(cantidad, personaje){
-        var posicion = pv.posicionRandom()
-        if (self.contador() < capacidad){
-            const manzana = new Manzana(image = "manzana.png", position = posicion)
-            contador += 1
+
+    override method generar(cantidad, personaje) {
+        if (manzanas.size() < capacidad) {
+            const posicion = pv.posicionRandom()
+            const manzana = new Manzana(
+                image = "manzana.png",
+                position = posicion
+            )
+
+            manzanas.add(manzana)
             game.addVisual(manzana)
         }
     }
 
+    method eliminar(manzana) {
+        manzanas.remove(manzana)
+    }
+
     override method reiniciar() {
-        contador = 0
+        manzanas.forEach({ manzana =>
+            game.removeVisual(manzana)
+        })
+        manzanas.clear()
     }
 }
 
 class GeneradorPocion inherits Generador {
-    var aparicion = 3
+    var aparicion = 5
 
     const pociones = [fabricaPocionChica, fabricaPocionGrande]
 
@@ -102,16 +118,16 @@ class GeneradorPocion inherits Generador {
         if(cantidadDeMuertes == aparicion){
             var fabrica = pociones.anyOne()
             fabrica.generar(personaje.position())
-            aparicion += 9
+            aparicion += 5
         }
     }
 
     override method reiniciar() {
-        aparicion = 3
+        aparicion = 5
     }
 }
 
-var generadorDeManzanas = new GeneradorManzana(capacidad = 5)
+var generadorDeManzanas = new GeneradorManzana(capacidad = 3)
 var generadorDePociones = new GeneradorPocion()
 
 object fabricaPocionChica {
