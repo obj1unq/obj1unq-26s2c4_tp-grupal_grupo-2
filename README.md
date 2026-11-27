@@ -7,7 +7,7 @@
 
 ## Sinopsis
 
-**Orc Slayer** es un juego de acción y supervivencia ambientado en un mundo de fantasía medieval. El jugador controla a Torvek, un guerrero que al volver de una batalla encuentra a toda su aldea destruida a manos de una invación de orcos, el deberá enfrentarse a hordas de orcos, recolectar recursos, subir de nivel y superar distintos desafíos hasta llegar al enfrentamiento final contra Azog, el Rey Orco.
+**Orc Slayer** es un juego de acción y supervivencia ambientado en un mundo de fantasía medieval. El jugador controla a Torvek, un guerrero que al volver de una batalla encuentra a toda su aldea destruída a manos de una invasión de Orcos. Él deberá enfrentarse a hordas de Orcos, recolectar recursos, subir de nivel y superar distintos desafíos hasta llegar al enfrentamiento final contra Azog, el Rey Orco.
 
 A medida que avanza la aventura, los enemigos se vuelven más peligrosos y será necesario aprovechar los objetos disponibles y las mejoras del personaje para sobrevivir.
 
@@ -38,14 +38,14 @@ El objetivo es superar los tres niveles del juego, derrotando a los enemigos y f
 
 ### Desarrollo del juego
 
-- **Nivel 1:** derrotar a 20 orcos y alcanzar el nivel 2 de Torvek para avanzar al siguiente nivel.
-- **Nivel 2:** derrotar a 10 goblins y alcanzar el nivel 3 de Torvek para continuar.
-- **Nivel 3:** enfrentarse al Rey Orco y derrotarlo para completar la aventura.
+- **Nivel 1:** derrotar a 20 Orcos y alcanzar el nivel 2 de Torvek para avanzar al siguiente nivel.
+- **Nivel 2:** derrotar a 10 Orcos y alcanzar el nivel 3 de Torvek para continuar.
+- **Nivel 3:** enfrentarse al Rey Azog y derrotarlo para completar la aventura.
 
 ### Objetos y mejoras
 
 - **Manzanas:** permiten recuperar un punto de vida.
-- **Pociones:** proporcionan recuperación de salud.
+- **Pociones:** proporcionan recuperación de salud dependiendo la poción.
 - **Materiales de crafteo:** se pueden recolectar durante la partida. Al reunir los cuatro materiales necesarios, el guerrero puede transformarse y mejorar sus capacidades.
 
 ### Consejos

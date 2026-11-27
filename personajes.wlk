@@ -98,6 +98,7 @@ class Personaje {
   method atacar() {
     if (estado.puedeAtacar()) {
         self.accionar(self.ataque(), nivel)
+        musicaEspadaHeroe.empezarMusica()
     }
   }
 
@@ -152,7 +153,6 @@ class Guerrero inherits Personaje {
   override method ejecutarAtaque() {
     self.validarEnemigo()
   }
-
 
   //Interactua con objetos en la misma posicion que el personaje guerrero
   method interactuar() {
@@ -233,9 +233,24 @@ class Goblin inherits Personaje {
     }
   }
 
+  override method atacar() {
+    if (estado.puedeAtacar()) {
+        self.accionar(self.ataque(), nivel)
+        musicaEspadaOrco.empezarMusica()
+        sonidoHeroeDolor.empezarMusica()
+    }
+  }
+
   override method ejecutarAtaque() {
     enemigo.recibirDanio()
     nivel.perderEnergia(enemigo)
+  }
+
+  override method validarMuerte(){
+    if(self.estaMuerto()){
+      self.accionar(self.muerte(), nivel)
+      sonidoMuerteOrco.empezarMusica()
+    }
   }
 
   method perseguirGuerrero() {
@@ -248,14 +263,40 @@ class Goblin inherits Personaje {
 
 class JefeGoblin inherits Goblin {
 
+  var pasos = 0
+
+  override method mover(direccion){
+    if(self.sePuedeTeletransportar()){
+      var direccionTeletransporte = pv.posicionRandom()
+      musicaTeleport.empezarMusica()
+      position = direccionTeletransporte
+      pasos = 0
+    }
+    else{
+      super(direccion)
+      pasos += 1
+    }
+  }
+
+  method sePuedeTeletransportar(){
+    return pasos == 4
+  }
+
     method inicializar() {
         vida = 40
     }
 
-    override method perderEnergia(danio) {
+  override method perderEnergia(danio) {
         super(danio)
         barraVidaJefe.actualizarVida()
     }
+  override method atacar() {
+    if (estado.puedeAtacar()) {
+        self.accionar(self.ataque(), nivel)
+        musicaEspadaReyOrco.empezarMusica()
+        sonidoHeroeDolor.empezarMusica()
+    }
+  }
 }
 
 class SegmentoVidaJefe {
@@ -340,6 +381,8 @@ object barraVidaJefe {
 class GeneradorGoblins inherits Generador {
   var property goblins = #{}
   var property cantidadMuertes = 0
+  var cantidadEnMapa = 0
+  const cantMax = 2
 
   method capacidadActual() {
       if (administradorNiveles.numeroNivelActual() == 1) {
@@ -351,7 +394,7 @@ class GeneradorGoblins inherits Generador {
   }
 
   override method generar(cantidad, personaje) {
-      if (cantidadMuertes < self.capacidadActual()) {
+      if (cantidadMuertes < self.capacidadActual() and cantidadEnMapa < cantMax) {
           var posicion = pv.posicionRandom()
           const estadosGoblin = new EstadoGoblin()
           
@@ -363,12 +406,14 @@ class GeneradorGoblins inherits Generador {
               nivel = self.nivelDelEnemigo()
               )
           goblins.add(nuevoGoblin)
+          cantidadEnMapa += 1
           game.addVisual(nuevoGoblin)
       }
   }
   
   method eliminar(goblin) {
       cantidadMuertes += 1
+      cantidadEnMapa -= 1
       generadorDePociones.generar(cantidadMuertes, goblin)
       generadorCrafteo.generar(cantidadMuertes, goblin)
       goblins.remove(goblin)

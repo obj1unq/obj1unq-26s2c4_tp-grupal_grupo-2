@@ -2,6 +2,7 @@ import personajes.*
 import cosasEntorno.*
 import mapa.*
 import game.*
+import musica.*
 
 class Corazon {
     const property position
@@ -24,6 +25,8 @@ class Corazon {
 
 class Energia inherits Imagen{
 
+    var sonido 
+
 
     override method esAtravesable(){
         return true
@@ -43,7 +46,7 @@ class Energia inherits Imagen{
     if (personaje.puedeAumentar()) {
         const espacioDisponible = personaje.restaDeSalud()
         const energiaAplicada = (self.energia()).min(espacioDisponible)
-
+        sonido.empezarMusica()
         personaje.sumarVida(energiaAplicada)
         self.remover()
         }
@@ -89,7 +92,8 @@ class GeneradorManzana inherits Generador {
             const posicion = pv.posicionRandom()
             const manzana = new Manzana(
                 image = "manzana.png",
-                position = posicion
+                position = posicion,
+                sonido = sonidoObjeto
             )
 
             manzanas.add(manzana)
@@ -133,7 +137,7 @@ var generadorDePociones = new GeneradorPocion()
 object fabricaPocionChica {
 
     method generar(_position) {
-        var pocionChica = new PocionChica(image = "pocion_1.png", position = _position)
+        var pocionChica = new PocionChica(image = "pocion_1.png", position = _position, sonido = sonidoPocion)
         game.addVisual(pocionChica)
     }
 }
@@ -141,7 +145,7 @@ object fabricaPocionChica {
 object fabricaPocionGrande {
 
     method generar(_position) {
-        var pocionGrande = new PocionGrande(image = "pocion_2.png", position = _position)
+        var pocionGrande = new PocionGrande(image = "pocion_2.png", position = _position, sonido = sonidoPocion)
         game.addVisual(pocionGrande)
     }
 }
