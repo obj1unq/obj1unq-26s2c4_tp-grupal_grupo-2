@@ -1,5 +1,6 @@
 import vida.*
 import administradorNiveles.*
+import musica.*
 
 class Imagen {
     var property image    = null
@@ -136,6 +137,7 @@ object inventarios {
         if(self.hayEspacio()){
             const inventarioLibre = casilleros.find({ casillero => not casillero.estaOcupado() })
             inventarioLibre.ocupado(elemento)
+            sonidoCrafteo.empezarMusica()
             game.removeVisual(inventarioLibre)
             personaje.agregarElementoCraft(elemento)
         }

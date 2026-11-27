@@ -135,7 +135,6 @@ class SecuenciaImagenFinal inherits SecuenciaImagen {
 class MenuPrincipal inherits Pantalla {
 
   override method mostrar() {
-    musicaMenu.empezarMusica()
     game.addVisual(fondoMenu)
     game.addVisual(botonStart)
     game.addVisual(botonControles)
