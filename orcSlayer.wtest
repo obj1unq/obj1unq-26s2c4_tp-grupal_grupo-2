@@ -1,0 +1,82 @@
+import direcciones.*
+import estados.*
+import nivelPersonajes.*
+import cosasEntorno.*
+import vida.*
+import mapa.*
+import personajes.*
+
+describe "El asesino de orcos tests" {
+
+  const estadosGuerreroTest = new EstadoGuerrero()
+  const estadosGoblinTest = new EstadoGoblin()
+
+  const guerreroTest = new Guerrero(estados = estadosGuerreroTest, estado = estadosGuerreroTest.normal(), position = game.at(4, 4), personaje = "guerrero", nivel = nivelGuerrero)
+
+  const espadaTest = new ElementoCraft(imagenInventario = "invEspada2.png", image = "espada_lvl2.png", position = game.at(4, 4))
+
+  const collarTest = new ElementoCraft(imagenInventario = "invCollar2.png", image = "collar_lvl2.png", position = game.at(4, 4))
+
+  const botasTest = new ElementoCraft(imagenInventario = "invBotas2.png", image = "botas_lvl2.png", position = game.at(4, 4))
+
+  const lingoteTest = new ElementoCraft(imagenInventario = "invLingote2.png", image = "lingote_lvl2.png", position = game.at(4, 4))
+
+  const manzanaTest = new Manzana(image = "manzana.png", position = game.at(4, 4))
+
+  const goblinTest = new Goblin(estados = estadosGoblinTest, estado = estadosGoblinTest.normal(), position = game.at(5, 4), personaje = "goblin", nivel = nivelGoblin)
+
+  const pocionTest = new PocionGrande(image = "pocion_2.png", position = game.at(4, 4))
+
+  test "Mover al guerrero a la derecha" {
+    guerreroTest.mover(derecha)
+    assert.equals(game.at(5, 4), guerreroTest.position())
+  }
+
+  test "El guerrero recoge un elemento de crafteo" {
+    espadaTest.chocar(guerreroTest)
+    assert.that(guerreroTest.elementosCrafts().contains(espadaTest))
+  }
+
+  test "El guerrero recoge una manzana" {
+    guerreroTest.perderEnergia(2)
+    manzanaTest.chocar(guerreroTest)
+    assert.equals(5, guerreroTest.vida())
+  }
+
+  test "El guerrero no recupera vida si agarra una manzana en salud máxima" {
+    manzanaTest.chocar(guerreroTest)
+    assert.equals(6, guerreroTest.vida())
+  }
+
+  test "El goblin pierde vida" {
+    goblinTest.perderEnergia(2)
+    assert.equals(4, goblinTest.vida())
+  }
+
+  test "El guerrero no supera su salud máxima al consumir una poción" {
+    guerreroTest.perderEnergia(1)
+    pocionTest.chocar(guerreroTest)
+    assert.equals(6, guerreroTest.vida())
+  }
+
+  test "El guerrero no puede transformarse si no tiene los cuatro elementos" {
+    assert.notThat(guerreroTest.sePuedeTransformar())
+  }
+
+  test "El guerrero puede transformarse si tiene los cuatro elementos del crafteo" {
+    guerreroTest.agregarElementoCraft(espadaTest)
+    guerreroTest.agregarElementoCraft(collarTest)
+    guerreroTest.agregarElementoCraft(botasTest)
+    guerreroTest.agregarElementoCraft(lingoteTest)
+
+    assert.that(guerreroTest.sePuedeTransformar())
+  }
+
+  test "El guerrero no puede moverse mientras ataca" {
+    guerreroTest.atacar()
+    const posicionInicial = guerreroTest.position()
+    guerreroTest.mover(derecha)
+
+    assert.equals(posicionInicial, guerreroTest.position())
+  }
+}
